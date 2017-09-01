@@ -34,12 +34,14 @@ static struct rule {
   {"<", TK_LS},
   {">", TK_GT},
   {"!", TK_NOT},
+  {"\\(", TK_LP},
+  {"\\)", TK_RP},
   {"\\+", TK_ADD},			// add
   {"-", TK_SUB},			// sub
-  {"*", TK_MUL},			// mul
+  {"\\*", TK_MUL},			// mul
   {"/", TK_DIV},			// div
   {"%", TK_MOD},
-  {"$", TK_DOLAR},
+  {"\\$", TK_DOLAR},
   {"[1-9]+", TK_NUM},
   {"[a-zA-Z]{[0-9]|[a-zA-Z]}*", TK_EXP}
 };
