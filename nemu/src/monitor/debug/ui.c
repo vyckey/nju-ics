@@ -38,6 +38,9 @@ static void cmd_error(int error_no, const char *cmd) {
 		case 2:
 			printf("Invalid argments in command '%s'\n", cmd);
 			break;
+		case 3:
+			printf("Too few argments in command '%s'\n", cmd);
+			break;
 		default:
 			printf("Unknown error_no\n");
 	}
@@ -63,7 +66,8 @@ static int cmd_si(char *args) {
 
 static int cmd_info(char *args) {
 	char *arg1 = strtok(NULL, " ");
-	if (strcmp(arg1, "r") == 0) {
+	if (arg1 == NULL) cmd_error(3, "info");
+	else if (strcmp(arg1, "r") == 0) {
 		for (int i = R_EAX; i <= R_EDI; ++i) {
 			printf("%s\t%d\n", regsl[i], reg_l(i));
 		}
