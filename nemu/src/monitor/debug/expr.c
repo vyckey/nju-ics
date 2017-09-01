@@ -109,7 +109,7 @@ static bool make_token(char *e) {
 				strncpy(tokens[nr_token].str, substr_start, substr_len);
 				tokens[nr_token].str[substr_len] = '\0';
 				break;
-			default: TODO();
+			default: ;//TODO();
         }
 		++nr_token;
 
@@ -133,7 +133,7 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  printf("%d\n", nr_token);
 
   return 0;
 }
