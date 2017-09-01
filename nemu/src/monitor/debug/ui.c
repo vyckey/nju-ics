@@ -36,6 +36,35 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char *args) {
+	return 0;
+}
+
+
+static int cmd_info(char *args) {
+	return 0;
+}
+
+
+static int cmd_p(char *args) {
+	return 0;
+}
+
+
+static int cmd_x(char *args) {
+	return 0;
+}
+
+
+static int cmd_w(char *args) {
+	return 0;
+}
+
+
+static int cmd_d(char *args) {
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -48,7 +77,12 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
-
+	{ "si", "Step one instruction exactly.", cmd_si },
+	{ "info", "Describe register or watchpoint status information.", cmd_info },
+	{ "p", "Print value of expression EXP.", cmd_p },
+	{ "x", "Print value of address.", cmd_x },
+	{ "w", "Set a watchpoint for an expression.", cmd_w },
+	{ "d", "Delete nth watchpoint.", cmd_d }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -89,7 +123,7 @@ void ui_mainloop(int is_batch_mode) {
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { continue; }
-
+printf("%s\n", cmd);
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
