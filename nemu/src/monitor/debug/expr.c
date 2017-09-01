@@ -43,7 +43,7 @@ static struct rule {
   {"%", TK_MOD},
   {"\\$", TK_DOLAR},
   {"[1-9]+", TK_NUM},
-  {"[a-zA-Z]{[0-9]|[a-zA-Z]}*", TK_EXP}
+  {"[a-zA-Z_][0-9a-zA-Z_]*", TK_EXP}
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
