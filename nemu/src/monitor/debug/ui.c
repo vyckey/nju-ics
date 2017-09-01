@@ -37,6 +37,8 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
+	char *arg1 = strtok(NULL, " ");
+	printf("%s\n", arg1);
 	return 0;
 }
 
@@ -114,21 +116,20 @@ void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
-  }
+  } 
 
   while (1) {
     char *str = rl_gets();
     char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
-    char *cmd = strtok(str, ",");
+    char *cmd = strtok(str, " ");
     if (cmd == NULL) { continue; }
-printf("%s\n", cmd);
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;
-    if (args >= str_end) {
+     if (args >= str_end) {
       args = NULL;
     }
 
@@ -142,8 +143,8 @@ printf("%s\n", cmd);
       if (strcmp(cmd, cmd_table[i].name) == 0) {
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
-      }
-    }
+       }
+    } 
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
