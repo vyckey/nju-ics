@@ -68,6 +68,7 @@ static int cmd_info(char *args) {
 	char *arg1 = strtok(NULL, " ");
 	if (arg1 == NULL) cmd_error(3, "info");
 	else if (strcmp(arg1, "r") == 0) {
+		printf("eip\t%d", cpu.eip);
 		for (int i = R_EAX; i <= R_EDI; ++i) {
 			printf("%s\t%d\t0x%08x\n", regsl[i], reg_l(i), reg_l(i));
 		}
