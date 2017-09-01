@@ -62,6 +62,16 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args) {
+	char *arg1 = strtok(NULL, " ");
+	if (strcmp(arg1, "r") == 0) {
+		for (int i = R_EAX; i <= R_EDI; ++i) {
+			printf("%s\t%d\n", regsl[i], reg_l(i));
+		}
+	}
+	else if (strcmp(arg1, "w") == 0) {
+		
+	}
+	else cmd_error(1, "info");
 	return 0;
 }
 
