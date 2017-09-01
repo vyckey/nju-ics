@@ -82,6 +82,9 @@ static int cmd_info(char *args) {
 
 
 static int cmd_p(char *args) {
+	bool success;
+	uint32_t value = expr(args, &success);
+	printf("%d\n", value);
 	return 0;
 }
 
@@ -138,7 +141,7 @@ static int cmd_help(char *args) {
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
         printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
-        printf("Usage: %s\n", cmd_table[i].usage);
+        if (cmd_table[i].usage) printf("Usage: %s\n", cmd_table[i].usage);
 		return 0;
       }
     }

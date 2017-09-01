@@ -7,10 +7,14 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ
+  TK_NOTYPE = 256,
 
   /* TODO: Add more token types */
-
+	TK_NOT, TK_LS, TK_LE, TK_EQ, TK_NE, TK_GE, TK_GT,
+	TK_ADD, TK_SUB, TK_MUL, TK_DIV, TK_MOD,
+	TK_LP, TK_RP,
+	TK_DOLAR,
+	TK_NUM, TK_EXP
 };
 
 static struct rule {
@@ -22,9 +26,22 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
-  {"==", TK_EQ}         // equal
+  {" +", TK_NOTYPE},		// spaces
+  {"<=", TK_LE},			// less
+  {">=", TK_GE},
+  {"==", TK_EQ},		// equal
+  {"!=", TK_NE},		// not equal
+  {"<", TK_LS},
+  {">", TK_GT},
+  {"!", TK_NOT},
+  {"\\+", TK_ADD},			// add
+  {"-", TK_SUB},			// sub
+  {"*", TK_MUL},			// mul
+  {"/", TK_DIV},			// div
+  {"%", TK_MOD},
+  {"$", TK_DOLAR},
+  {"[1-9]+", TK_NUM},
+  {"[a-zA-Z]{[0-9]|[a-zA-Z]}*", TK_EXP}
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -40,9 +57,11 @@ void init_regex() {
   int ret;
 
   for (i = 0; i < NR_REGEX; i ++) {
-    ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
+    int cflags = REG_EXTENDED;
+	if (rules[i].token_type == TK_NOTYPE) cflags = REG_NOSUB;
+	ret = regcomp(&re[i], rules[i].regex, cflags);
     if (ret != 0) {
-      regerror(ret, &re[i], error_msg, 128);
+      regerror(ret, &re[i], error_msg, sizeof(error_msg));
       panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
     }
   }
@@ -79,9 +98,18 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
+		if (nr_token < 32) tokens[nr_token].type = rules[i].token_type;
+		else panic("Out of range of length of regexp tokens\n");
         switch (rules[i].token_type) {
-          default: TODO();
+			case TK_NUM: case TK_EXP:
+				if (substr_len >= sizeof(tokens[0].str))
+					panic("Too long match string\n");
+				strncpy(tokens[nr_token].str, substr_start, substr_len);
+				tokens[nr_token].str[substr_len] = '\0';
+				break;
+			default: TODO();
         }
+		++nr_token;
 
         break;
       }
