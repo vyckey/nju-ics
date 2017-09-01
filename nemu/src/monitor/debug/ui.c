@@ -105,19 +105,20 @@ static int cmd_help(char *args);
 static struct {
   char *name;
   char *description;
+  char *usage;
   int (*handler) (char *);
 } cmd_table [] = {
-  { "help", "Display informations about all supported commands", cmd_help },
-  { "c", "Continue the execution of the program", cmd_c },
-  { "q", "Exit NEMU", cmd_q },
+  { "help", "help [command]", "Display informations about all supported commands", cmd_help },
+  { "c", NULL, "Continue the execution of the program", cmd_c },
+  { "q", NULL, "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
-	{ "si", "Step one instruction exactly.", cmd_si },
-	{ "info", "Describe register or watchpoint status information.", cmd_info },
-	{ "p", "Print value of expression EXP.", cmd_p },
-	{ "x", "Print value of address.", cmd_x },
-	{ "w", "Set a watchpoint for an expression.", cmd_w },
-	{ "d", "Delete nth watchpoint.", cmd_d }
+	{ "si", "si [n] (n is number of instructions)", "Step one instruction exactly.", cmd_si },
+	{ "info", "info r/w", "Describe register or watchpoint status information.", cmd_info },
+	{ "p", "p EXP", "Print value of expression EXP.", cmd_p },
+	{ "x", "x n EXP (n is the number of 4B)", "Print value of address.", cmd_x },
+	{ "w", "w EXP", "Set a watchpoint for an expression.", cmd_w },
+	{ "d", "d n (n is the id of watchpoint)", "Delete nth watchpoint.", cmd_d }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
