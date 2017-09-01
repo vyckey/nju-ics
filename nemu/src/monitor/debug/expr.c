@@ -10,7 +10,8 @@ enum {
   TK_NOTYPE = 256,
 
   /* TODO: Add more token types */
-	TK_NOT, TK_LS, TK_LE, TK_EQ, TK_NE, TK_GE, TK_GT,
+	TK_LS, TK_LE, TK_EQ, TK_NE, TK_GE, TK_GT,
+	TK_NOT, TK_AND,TK_OR,
 	TK_ADD, TK_SUB, TK_MUL, TK_DIV, TK_MOD,
 	TK_LP, TK_RP,
 	TK_DOLAR,
@@ -27,6 +28,8 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},		// spaces
+  {"&&", TK_AND},
+  {"\\|\\|", TK_OR},
   {"<=", TK_LE},			// less
   {">=", TK_GE},
   {"==", TK_EQ},		// equal
@@ -41,7 +44,7 @@ static struct rule {
   {"\\*", TK_MUL},			// mul
   {"/", TK_DIV},			// div
   {"%", TK_MOD},
-  {"\\$", TK_DOLAR},
+  {"\\$[a-z]{3,3}", TK_DOLAR},
   {"(0[xX][0-9a-fA-F]+)|([0-9a-zA-Z_]*)", TK_NUM},
   {"[a-zA-Z_][0-9a-zA-Z_]*", TK_EXP}
 };
