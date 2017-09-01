@@ -37,11 +37,12 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
+	unsigned int n = 1;
 	char *arg1 = strtok(NULL, " ");
-	printf("%s\n", arg1);
+	if (arg1) n = atoi(arg1);
+	printf("%d\n", n);
 	return 0;
 }
-
 
 static int cmd_info(char *args) {
 	return 0;
