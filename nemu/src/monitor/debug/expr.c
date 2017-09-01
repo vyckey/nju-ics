@@ -60,7 +60,7 @@ void init_regex() {
 
   for (i = 0; i < NR_REGEX; i ++) {
     int cflags = REG_EXTENDED;
-	if (rules[i].token_type == TK_NOTYPE) cflags = REG_NOSUB;
+	if (rules[i].token_type == TK_NOTYPE) cflags = REG_EXTENDED;
 	ret = regcomp(&re[i], rules[i].regex, cflags);
     if (ret != 0) {
       regerror(ret, &re[i], error_msg, sizeof(error_msg));
@@ -133,7 +133,7 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  printf("%d\n", nr_token);
+  return nr_token;
 
   return 0;
 }
