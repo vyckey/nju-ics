@@ -59,9 +59,7 @@ void init_regex() {
   int ret;
 
   for (i = 0; i < NR_REGEX; i ++) {
-    int cflags = REG_EXTENDED;
-	if (rules[i].token_type == TK_NOTYPE) cflags = REG_EXTENDED;
-	ret = regcomp(&re[i], rules[i].regex, cflags);
+	ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
     if (ret != 0) {
       regerror(ret, &re[i], error_msg, sizeof(error_msg));
       panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
@@ -100,6 +98,7 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
+		if (rules[i].token_type == TK_NOTYPE) continue;
 		if (nr_token < 32) tokens[nr_token].type = rules[i].token_type;
 		else panic("Out of range of length of regexp tokens\n");
         switch (rules[i].token_type) {
