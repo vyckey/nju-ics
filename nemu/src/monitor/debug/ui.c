@@ -121,7 +121,7 @@ void ui_mainloop(int is_batch_mode) {
     char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
-    char *cmd = strtok(str, " ");
+    char *cmd = strtok(str, ",");
     if (cmd == NULL) { continue; }
 printf("%s\n", cmd);
     /* treat the remaining string as the arguments,
