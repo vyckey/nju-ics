@@ -69,7 +69,7 @@ static int cmd_info(char *args) {
 	if (arg1 == NULL) cmd_error(3, "info");
 	else if (strcmp(arg1, "r") == 0) {
 		for (int i = R_EAX; i <= R_EDI; ++i) {
-			printf("%s\t%d\t%08x\n", regsl[i], reg_l(i), reg_l(i));
+			printf("%s\t%d\t0x%08x\n", regsl[i], reg_l(i), reg_l(i));
 		}
 	}
 	else if (strcmp(arg1, "w") == 0) {
