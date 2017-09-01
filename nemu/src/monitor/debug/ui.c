@@ -27,6 +27,22 @@ char* rl_gets() {
   return line_read;
 }
 
+static void cmd_error(int error_no, const char *cmd) {
+	switch (error_no) {
+		case 0:
+			printf("Unknown command '%s'\n", cmd);
+			break;
+		case 1:
+			printf("Unknown argments in command '%s'\n", cmd);
+			break;
+		case 2:
+			printf("Invalid argments in command '%s'\n", cmd);
+			break;
+		default:
+			printf("Unknown error_no\n");
+	}
+}
+
 static int cmd_c(char *args) {
   cpu_exec(-1);
   return 0;
@@ -37,10 +53,11 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
-	unsigned int n = 1;
+	int n;
 	char *arg1 = strtok(NULL, " ");
-	if (arg1) n = atoi(arg1);
-	printf("%d\n", n);
+	n = ((arg1 == NULL) ? 1 : atoi(arg1));
+	if (n < 1) cmd_error(2, "si");
+	else cpu_exec(n);
 	return 0;
 }
 
