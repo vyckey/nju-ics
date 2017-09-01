@@ -104,8 +104,8 @@ static int cmd_help(char *args);
 
 static struct {
   char *name;
-  char *description;
   char *usage;
+  char *description;
   int (*handler) (char *);
 } cmd_table [] = {
   { "help", "help [command]", "Display informations about all supported commands", cmd_help },
@@ -138,7 +138,8 @@ static int cmd_help(char *args) {
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
         printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
-        return 0;
+        printf("Usage: %s\n", cmd_table[i].usage);
+		return 0;
       }
     }
     printf("Unknown command '%s'\n", arg);
