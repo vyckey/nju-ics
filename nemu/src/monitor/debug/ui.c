@@ -18,6 +18,7 @@ char* rl_gets() {
     line_read = NULL;
   }
 
+printf("sunxin\n");
   line_read = readline("(nemu) ");
 
   if (line_read && *line_read) {
