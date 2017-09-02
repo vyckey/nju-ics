@@ -45,7 +45,7 @@ static struct rule {
   {"/", TK_DIV},		// div
   {"%", TK_MOD},		// mod
   {"\\$[a-z]{3,3}", TK_REG},
-  {"(0[xX][0-9a-fA-F]+)|([0-9]+)", TK_NUM},
+  {"(0[xX][0-9a-fA-F]+)|([1-9][0-9]+)|([0-7]+)", TK_NUM},
   /* {"[a-zA-Z_][0-9a-zA-Z_]*", TK_EXP} */
 };
 
@@ -117,7 +117,6 @@ static bool make_token(char *e) {
 				}
 				else sscanf(substr_start, "%d", &v);
 				tokens[nr_token].value = v;
-				printf("%c %x\n", substr_start[0],tokens[nr_token].value);
 			}
 			else {
 				int i;
