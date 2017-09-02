@@ -123,6 +123,7 @@ static bool make_token(char *e) {
 				else if (strcmp(substr_start, "eip") == 0)
 					tokens[nr_token].value = i;
 				else return false;
+				printf("%s\n", substr_start);
 			}
 			e[position] = p;
 		}
