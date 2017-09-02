@@ -114,15 +114,15 @@ static bool make_token(char *e) {
 			else {
 				int i;
 				for (i = R_EAX; i <= R_EDI; ++i) {
-					if(strcmp(substr_start, regsl[i]) == 0) {
+					if(strcmp(substr_start + 1, regsl[i]) == 0) {
 						tokens[nr_token].value = i;
 						break;
 					}
 				}
 				if (i <= R_EDI) ;
-				else if (strcmp(substr_start, "eip") == 0)
+				else if (strcmp(substr_start, "$eip") == 0)
 					tokens[nr_token].value = i;
-				//else return false;
+				else return false;
 				printf("%s\n", substr_start);
 			}
 			e[position] = p;
