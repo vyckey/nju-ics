@@ -18,10 +18,8 @@ char* rl_gets() {
     line_read = NULL;
   }
 
-printf("sunxin\n");
   line_read = readline("(nemu) ");
 
-printf("sunxin\n");
   if (line_read && *line_read) {
     add_history(line_read);
   }
