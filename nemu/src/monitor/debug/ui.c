@@ -13,14 +13,15 @@ void cpu_exec(uint64_t);
 char* rl_gets() {
   static char *line_read = NULL;
 
-printf("sunxin\n");
   if (line_read) {
     free(line_read);
     line_read = NULL;
   }
 
+printf("sunxin\n");
   line_read = readline("(nemu) ");
 
+printf("sunxin\n");
   if (line_read && *line_read) {
     add_history(line_read);
   }
