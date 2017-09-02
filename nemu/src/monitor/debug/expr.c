@@ -15,7 +15,7 @@ enum {
 	TK_NOT, TK_AND,TK_OR,
 	TK_ADD, TK_SUB, TK_MUL, TK_DIV, TK_MOD,
 	TK_LP, TK_RP,
-	TK_NUM, TK_REG
+	TK_NUM, TK_REG, TK_REF
 };
 
 static struct rule {
@@ -39,6 +39,7 @@ static struct rule {
   {"!", TK_NOT},		// not
   {"\\(", TK_LP},		// (
   {"\\)", TK_RP},		// )
+  {"@", TK_REF},		// @
   {"\\+", TK_ADD},		// add
   {"-", TK_SUB},		// sub
   {"\\*", TK_MUL},		// mul
@@ -150,6 +151,39 @@ static bool make_token(char *e) {
   return true;
 }
 
+static char opg_table[][10] = {
+// ||,&&,<,+,*,@,!,(,),e
+	{ '>', '<', '<', '<', '<', '<', '<', '<', '>', '<' },
+	{ '>', '>', '<', '<', '<', '<', '<', '<', '>', '<' },
+	{ '>', '>', '>', '<', '<', '<', '<', '<', '>', '<' },
+	{ '>', '>', '>', '>', '<', '<', '<', '<', '>', '<' },
+	{ '>', '>', '>', '>', '>', '<', '<', '<', '>', '<' },
+	{ '>', '>', '>', '>', '>', ' ', '<', '<', '>', '<' },
+	{ '>', '>', '>', '>', '>', ' ', '<', '<', '>', '<' },
+	{ '<', '<', '<', '<', '<', '<', '<', '<', '=', '<' },
+	{ '>', '>', '>', '>', '>', ' ', ' ', ' ', '>', ' ' },
+	{ '>', '>', '>', '>', '>', ' ', ' ', ' ', '>', ' ' }
+};
+
+static int prior(int type) {
+	int p;
+	switch(type) {
+		case TK_OR: p = 0; break;
+		case TK_AND: p = 1; break;
+		case TK_LE: case TK_LS: case TK_EQ: case TK_NE: case TK_GE:	case TK_GT:
+			p = 2; break;
+		case TK_ADD: case TK_SUB: p = 3; break;
+		case TK_MUL: case TK_DIV: case TK_MOD: p = 4; break;
+		case TK_REF: p = 5; break;
+		case TK_NOT: p = 6; break;
+		case TK_LP: p = 7; break;
+		case TK_RP: p = 8; break;
+		case TK_NUM: case TK_REG: p = 9; break; 
+		default: p = 0xf;
+	}
+	return p;
+}
+
 static uint32_t cal(int type, uint32_t a, uint32_t b) {
 	uint32_t result = a;
 	switch(type) {
@@ -172,28 +206,46 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 	}
 	return result;
 } 
-static int prior(int type) {
-	int p;
-	switch(type) {
-		case TK_NOT:
-			p = 0;
-			break;
-		case TK_MUL: case TK_DIV: case TK_MOD:
-			p = 1;
-			break;
-		case TK_ADD: case TK_SUB:
-			p = 2;
-			break;
-		case TK_LE: case TK_LS: case TK_GE:	case TK_GT:
-			p = 3;
-			break;
-		case TK_EQ:
-			p = 4;
-			break;
-		default: p = 0xf;
+
+static uint32_t opg_handle(bool *success) {
+	int top = -1;
+	Token stack[32];
+	for (int i = 1; i < nr_token; ++i) {
+		int j = top + 1, p;
+		do {
+			--j;
+			p = prior(stack[j].type);
+		} while (j >= 0 && p != 0xf);
+		if (j <0 || opg_table[p][i] == '<') {
+			++top;
+			stack[top].type = tokens[i].type;
+			if (tokens[i].type == TK_REG)
+				stack[top].value = cal(TK_REG, tokens[i].value, 0);
+			else stack[top].value = tokens[i].value;
+		}
+		else if (opg_table[p][i] == '>') {
+			if (tokens[i].type == TK_RP) {
+				stack[top-2].type = stack[top-1].type;
+				stack[top-2].value = stack[top-1].value;
+				top -=2;
+			}
+			else if (stack[top-1].type == TK_REF || stack[top-1].type == TK_NOT) {
+				--top;
+				stack[top].value = cal(stack[top].type, stack[top].value, 0);
+				stack[top].type = TK_NUM;
+			}
+			else if (prior(stack[top-1].type) != 0xf) {
+				top -=2;
+				stack[top].value = cal(stack[top+1].type, stack[top+1].value, stack[top+2].value);
+				stack[top].type = TK_NUM;
+			}
+			else assert(0);
+		}
+		else assert(0);
 	}
-	return p;
+	return stack[top].value;
 }
+/*
 static uint32_t eval(bool *success, int begin, int end) {
 	int op = end, par = 0;
 	int type;
@@ -237,7 +289,7 @@ static uint32_t eval(bool *success, int begin, int end) {
 		return cal(type, a, b);
 	}
 }
-
+*/
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -245,5 +297,17 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  return eval(success, 0, nr_token);
+  return opg_handle(success);
 }
+
+/*
+||,&&,<,+,*,@,!,(,)
+H -> H||I | I
+I -> I&&J | J
+J -> J<E | E
+
+E -> E+T | T
+T -> T*F | F
+F -> @P | !P | P
+P -> (H) | e
+*/
