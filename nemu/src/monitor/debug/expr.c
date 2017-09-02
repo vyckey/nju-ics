@@ -5,6 +5,7 @@
  */
 #include <sys/types.h>
 #include <regex.h>
+#include <stdlib.h>
 
 enum {
   TK_NOTYPE = 256,
@@ -14,8 +15,7 @@ enum {
 	TK_NOT, TK_AND,TK_OR,
 	TK_ADD, TK_SUB, TK_MUL, TK_DIV, TK_MOD,
 	TK_LP, TK_RP,
-	TK_DOLAR,
-	TK_NUM, TK_EXP
+	TK_NUM, TK_REG
 };
 
 static struct rule {
@@ -27,26 +27,26 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +", TK_NOTYPE},		// spaces
-  {"&&", TK_AND},
-  {"\\|\\|", TK_OR},
-  {"<=", TK_LE},			// less
-  {">=", TK_GE},
+  {" +", TK_NOTYPE},	// spaces
+  {"&&", TK_AND},		// and
+  {"\\|\\|", TK_OR},	// or
+  {"<=", TK_LE},		// less equal
+  {">=", TK_GE},		// greater equal
   {"==", TK_EQ},		// equal
   {"!=", TK_NE},		// not equal
-  {"<", TK_LS},
-  {">", TK_GT},
-  {"!", TK_NOT},
-  {"\\(", TK_LP},
-  {"\\)", TK_RP},
-  {"\\+", TK_ADD},			// add
-  {"-", TK_SUB},			// sub
-  {"\\*", TK_MUL},			// mul
-  {"/", TK_DIV},			// div
-  {"%", TK_MOD},
-  {"\\$[a-z]{3,3}", TK_DOLAR},
-  {"(0[xX][0-9a-fA-F]+)|([0-9a-zA-Z_]*)", TK_NUM},
-  {"[a-zA-Z_][0-9a-zA-Z_]*", TK_EXP}
+  {"<", TK_LS},			// less
+  {">", TK_GT},			// greater
+  {"!", TK_NOT},		// not
+  {"\\(", TK_LP},		// (
+  {"\\)", TK_RP},		// )
+  {"\\+", TK_ADD},		// add
+  {"-", TK_SUB},		// sub
+  {"\\*", TK_MUL},		// mul
+  {"/", TK_DIV},		// div
+  {"%", TK_MOD},		// mod
+  {"\\$[a-z]{3,3}", TK_REG},
+  {"(0[xX][0-9a-fA-F]+)|([0-9]+)", TK_NUM},
+  /* {"[a-zA-Z_][0-9a-zA-Z_]*", TK_EXP} */
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -71,8 +71,8 @@ void init_regex() {
 }
 
 typedef struct token {
-  int type;
-  char str[32];
+	int type;
+	uint32_t value;
 } Token;
 
 Token tokens[32];
@@ -101,16 +101,22 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-		if (rules[i].token_type == TK_NOTYPE) continue;
-		if (nr_token < 32) tokens[nr_token].type = rules[i].token_type;
-		else panic("Out of range of length of regexp tokens\n");
-        switch (rules[i].token_type) {
-			case TK_NUM: case TK_EXP:
-				if (substr_len >= sizeof(tokens[0].str))
-					panic("Too long match string\n");
-				strncpy(tokens[nr_token].str, substr_start, substr_len);
-				tokens[nr_token].str[substr_len] = '\0';
-				break;
+		int type = rules[i].token_type;
+		if (type == TK_NOTYPE) continue;
+		if (nr_token < 32) tokens[nr_token].type = type;
+		else assert(0); // Out of range of length of regexp tokens
+        if (type == TK_NUM || type == TK_REG) {
+			char p = e[position];
+			e[position] = '\0';
+			if(type == TK_NUM) {
+				tokens[nr_token].value = atoi(substr_start);
+			}
+			else {
+				
+			}
+			e[position] = p;
+		}
+		switch (type) {
 			default: ;//TODO();
         }
 		++nr_token;
@@ -127,7 +133,23 @@ static bool make_token(char *e) {
 
   return true;
 }
-
+/*
+static int find_op(int begin, int end) {
+	int pos = end, par = 0;
+	int type = tokens[begin].token_type;
+	if (type == TK_LP) ++par;
+	if (type != TK_NUM || type != TK_EXP)
+}
+static uint32_t eval(int begin, int end) {
+	int type;
+	if (begin >= end) panic("Error in function eval.");
+	type = tokens[begin].token_type;
+	if (type == TK_NUM) {
+		
+	}
+	else if ()
+}
+*/
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
