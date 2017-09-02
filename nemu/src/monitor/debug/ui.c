@@ -13,6 +13,7 @@ void cpu_exec(uint64_t);
 char* rl_gets() {
   static char *line_read = NULL;
 
+printf("sunxin\n");
   if (line_read) {
     free(line_read);
     line_read = NULL;
@@ -159,8 +160,8 @@ void ui_mainloop(int is_batch_mode) {
   while (1) {
     char *str = rl_gets();
     char *str_end = str + strlen(str);
-printf("sunxin\n");
-    /* extract the first token as the command */
+    
+	/* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { continue; }
     /* treat the remaining string as the arguments,
