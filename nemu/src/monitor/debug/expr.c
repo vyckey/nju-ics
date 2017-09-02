@@ -109,13 +109,20 @@ static bool make_token(char *e) {
 			char p = e[position];
 			e[position] = '\0';
 			if(type == TK_NUM) {
-				tokens[nr_token].value = atoi(substr_start);
+				int v;
+				if (substr_start[0] == '0') {
+					if (substr_start[1] == 'x' || substr_start[1] == 'X')
+						sscanf(substr_start, "%d", &v);
+					else sscanf(substr_start, "%o", &v);
+				}
+				else sscanf(substr_start, "%x", &v);
+				tokens[nr_token].value = v;
 				printf("%08x\n", tokens[nr_token].value);
 			}
 			else {
 				int i;
 				for (i = R_EAX; i <= R_EDI; ++i) {
-					if(strcmp(substr_start + 1, regsl[i]) == 0) {
+					if (strcmp(substr_start + 1, regsl[i]) == 0) {
 						tokens[nr_token].value = i;
 						break;
 					}
