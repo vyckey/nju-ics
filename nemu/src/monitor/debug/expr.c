@@ -110,6 +110,7 @@ static bool make_token(char *e) {
 			e[position] = '\0';
 			if(type == TK_NUM) {
 				tokens[nr_token].value = atoi(substr_start);
+				printf("%08x\n", tokens[nr_token].value);
 			}
 			else {
 				int i;
@@ -123,7 +124,6 @@ static bool make_token(char *e) {
 				else if (strcmp(substr_start, "$eip") == 0)
 					tokens[nr_token].value = i;
 				else return false;
-				printf("%s\n", substr_start);
 			}
 			e[position] = p;
 		}
@@ -131,7 +131,6 @@ static bool make_token(char *e) {
 			default: ;//TODO();
         }
 		++nr_token;
-
         break;
       }
     }
