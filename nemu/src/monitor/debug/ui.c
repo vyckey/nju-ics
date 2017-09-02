@@ -155,11 +155,11 @@ void ui_mainloop(int is_batch_mode) {
     cmd_c(NULL);
     return;
   } 
-printf("sunxin\n");
+  
   while (1) {
     char *str = rl_gets();
     char *str_end = str + strlen(str);
-
+printf("sunxin\n");
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { continue; }
