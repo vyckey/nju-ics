@@ -117,7 +117,7 @@ static bool make_token(char *e) {
 				}
 				else sscanf(substr_start, "%x", &v);
 				tokens[nr_token].value = v;
-				printf("%c%x\n", substr_start[0],tokens[nr_token].value);
+				printf("%c %d\n", substr_start[0],tokens[nr_token].value);
 			}
 			else {
 				int i;
