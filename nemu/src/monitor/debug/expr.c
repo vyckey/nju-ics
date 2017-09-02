@@ -112,7 +112,17 @@ static bool make_token(char *e) {
 				tokens[nr_token].value = atoi(substr_start);
 			}
 			else {
-				
+				int i;
+				for (i = R_EAX; i <= R_EDI; ++i) {
+					if(strcmp(substr_start, regsl[i]) == 0) {
+						tokens[nr_token].value = i;
+						break;
+					}
+				}
+				if (i <= R_EDI) ;
+				else if (strcmp(substr_start, "eip") == 0)
+					tokens[nr_token].value = i;
+				else return false;
 			}
 			e[position] = p;
 		}
