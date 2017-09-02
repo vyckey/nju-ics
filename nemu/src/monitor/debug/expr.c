@@ -149,23 +149,95 @@ static bool make_token(char *e) {
 
   return true;
 }
-/*
-static int find_op(int begin, int end) {
-	int pos = end, par = 0;
-	int type = tokens[begin].token_type;
-	if (type == TK_LP) ++par;
-	if (type != TK_NUM || type != TK_EXP)
-}
-static uint32_t eval(int begin, int end) {
-	int type;
-	if (begin >= end) panic("Error in function eval.");
-	type = tokens[begin].token_type;
-	if (type == TK_NUM) {
-		
+
+static uint32_t cal(int type, uint32_t a, uint32_t b) {
+	uint32_t result = a;
+	switch(type) {
+		case TK_ADD: result += b; break;
+		case TK_SUB: result -= b; break;
+		case TK_MUL: result *= b; break;
+		case TK_DIV: result /= b; break;
+		case TK_MOD: result %= b; break;
+		case TK_AND: result = a && b; break;
+		case TK_OR:  result = a || b; break;
+		case TK_NOT: result = !a; break;
+		case TK_LE: result = a <= b; break;
+		case TK_LS: result = a < b; break;
+		case TK_EQ: result = a == b; break;
+		case TK_NE: result = a != b; break;
+		case TK_GE: result = a >= b; break;
+		case TK_GT: result = a > b; break;
+		case TK_REG: result = (a <= R_EDI ? reg_l(a) : cpu.eip);
+		default: ;
 	}
-	else if ()
+	return result;
+} 
+static int prior(int type) {
+	int p;
+	switch(type) {
+		case TK_NOT:
+			p = 0;
+			break;
+		case TK_MUL: case TK_DIV: case TK_MOD:
+			p = 1;
+			break;
+		case TK_ADD: case TK_SUB:
+			p = 2;
+			break;
+		case TK_LE: case TK_LS: case TK_GE:	case TK_GT:
+			p = 3;
+			break;
+		case TK_EQ:
+			p = 4;
+			break;
+		default: p = 0xf;
+	}
+	return p;
 }
-*/
+static uint32_t eval(bool *success, int begin, int end) {
+	int op = end, par = 0;
+	int type;
+	if (begin + 1 == end) {
+		if (prior(tokens[begin].type) == 0xf) *success = true;
+		else *success = false;
+		return cal(tokens[begin].type, tokens[begin].value, 0);
+	}
+	for (int i = begin; i < end; ++i) {
+		type = tokens[i].type;
+		int cur_p = prior(type);
+		if (par == 0) {
+			if (op == end) {
+				if (cur_p == 2) { op = i; break; }
+				else if (cur_p == 1) ;
+			}
+			else {
+				int last_p = prior(tokens[op].type);
+				if (last_p <= cur_p) break;
+				else if (cur_p == 0) break;
+				else {
+					cur_p = i;
+				}
+			}
+		}
+		else if (type == TK_LP) ++par;
+		else if (type == TK_RP) --par;
+	}
+	if (op == end) {
+		if (tokens[begin].type == TK_LP && par == 0)
+			return eval(success, begin + 1, end -1);
+		else { *success = false; return 0; }
+	}
+	type = tokens[op].type;
+	if (op == begin)
+		return cal(type, eval(success, begin + 1, end), 0);
+	else {
+		bool pb;
+		uint32_t a = eval(&pb, begin, op), b = eval(success, op + 1, end);
+		*success = pb && *success;
+		return cal(type, a, b);
+	}
+}
+
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -173,7 +245,5 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  return nr_token;
-
-  return 0;
+  return eval(success, 0, nr_token);
 }
