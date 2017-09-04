@@ -91,6 +91,21 @@ static int cmd_p(char *args) {
 
 
 static int cmd_x(char *args) {
+	bool b;
+	char *arg1 = strtok(NULL, " ");
+	char *arg2 = strtok(NULL, " ");
+	if (arg2) {
+		int n = atoi(arg1);
+		//int addr = expr(arg2, &b) & 0xfffffffc;
+		if (b) {
+			for (int i = 0; i < n; ++i) {
+				//int *p = addr + (i << 2);
+				//printf("0x%08x: \t0x%08x\t0x%08x\t0x%08x0x%08x\n", *p, *p, *(p+1), *(p+2), *(p+3));
+			}
+		}
+	}
+	else b = false;
+	if (!b) printf("Invalid Expr\n");
 	return 0;
 }
 

@@ -189,7 +189,7 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 		case TK_GE: result = a >= b; break;
 		case TK_GT: result = a > b; break;
 		case TK_REG: result = (a <= R_EDI ? reg_l(a) : cpu.eip);
-		case TK_REF: result = *(int*)100;
+		case TK_REF: break; //result = *(int*)a;
 		default: ;
 	}
 	return result;
