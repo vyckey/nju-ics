@@ -24,12 +24,15 @@ void init_wp_pool() {
 
 WP* new_wp(char *str) {
 	WP *cur = NULL;
-	if (free_) {
+	bool b = false;
+	uint32_t v = expr(str, &b);
+	if (b && free_) {
 		cur = free_;
 		free_ = free_->next;
 		cur->next = head;
 		head = cur;
-		head->expr_str = str;
+		cur->last_value = v;
+		cur->expr_str = str;
 	}
 	return cur;
 }
@@ -56,7 +59,6 @@ void clear_wp() {
 	while (p) {
 		if (p->expr_str) {
 			free(p->expr_str);
-			p->expr_str = NULL;
 		}
 		p = p->next;
 	}
