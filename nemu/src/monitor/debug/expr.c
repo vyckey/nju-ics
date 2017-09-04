@@ -266,9 +266,9 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 		if (type == TK_LP) ++par;
 		else if (type == TK_RP) --par;
 		else if (par == 0 && prior(type) < 7) {
+			printf("%d,%d\n",i,op);
 			if (op == end) op = i;
-			else if (prior(type) < prior(op)) { printf("op%d<%d,%d\n", prior(type), prior(op) ,op);op = i;}
-printf("%d+%d,%d\n", TK_ADD, tokens[1].type, prior(tokens[1].type));
+			else if (prior(type) < prior(op)) op = i;
 		}
 	}
 	if (par == 0 && op != end) {
