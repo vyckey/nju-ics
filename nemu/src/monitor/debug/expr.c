@@ -267,8 +267,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 		else if (type == TK_RP) --par;
 		else if (par == 0 && prior(type) < 7) {
 			if (op == end) op = i;
-			else if (prior(type) < prior(op)) op = i;
-			printf("op%d\n", op);
+			else if (prior(type) < prior(op)) { op = i;printf("op%d<%d\n", prior(type), prior(op));}
 		}
 	}
 	if (par == 0 && op != end) {
