@@ -251,6 +251,7 @@ uint32_t opg_handle(bool *success) {
 
 uint32_t expr_cal(bool *suc, int begin, int end) {
 	int par = 0, op = end, result = 0;
+	printf("%d,%d\n", begin, end);
 	if (begin + 1 == end) {
 		int type = tokens[begin].type;
 		if (type != TK_NUM && type != TK_REG) *suc = false;
