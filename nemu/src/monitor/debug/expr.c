@@ -254,9 +254,10 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 	printf("%d,%d\n", begin, end);
 	if (begin + 1 == end) {
 		int type = tokens[begin].type;
-		if (type != TK_NUM && type != TK_REG) *suc = false;
-		else if (type == TK_NUM) result = tokens[begin].value;
-		else result = cal(type, tokens[begin].value, 0);
+		*suc = true;
+		if (type == TK_NUM) result = tokens[begin].value;
+		else if (type == TK_REG) result = cal(type, tokens[begin].value, 0);
+		else *suc = false;
 		return result;
 	}
 	for (int i = begin; i < end; ++i) {
