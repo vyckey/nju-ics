@@ -19,7 +19,8 @@ char* rl_gets() {
   }
 
   //line_read = readline("(nemu) ");
-line_read = "p 123";
+char *buf = "p 123";
+line_read = buf;
   if (line_read && *line_read) {
     add_history(line_read);
   }
