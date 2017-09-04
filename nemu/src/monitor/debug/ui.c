@@ -96,7 +96,9 @@ static int cmd_x(char *args) {
 
 
 static int cmd_w(char *args) {
-	if (new_wp(args)) printf("Had add watchpoint.\n");
+	char *str = malloc(sizeof(char) * (strlen(args) + 1));
+	strcpy(str,args);
+	if (new_wp(str)) printf("Had add watchpoint.\n");
 	else printf("Failed.\n");
 	return 0;
 }
