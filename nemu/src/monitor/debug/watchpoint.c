@@ -17,7 +17,7 @@ void init_wp_pool() {
   wp_pool[NR_WP - 1].next = NULL;
 
   head = NULL;
-  free_ = wp_pool;
+  free_ = wp_pool;printf("fsdfaffa\n");
 }
 
 /* TODO: Implement the functionality of watchpoint */
@@ -72,7 +72,7 @@ void list_wp() {
 	WP *p = head;
 	while (p) {
 		bool b;
-		printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: 0x%x\n", p->NO, p->expr_str, p->last_value, expr(p->expr_str, &b));
+		printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: 0x%x\n\n", p->NO, p->expr_str, p->last_value, expr(p->expr_str, &b));
 		p = p->next;
 	}
 }

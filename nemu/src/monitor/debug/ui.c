@@ -133,7 +133,7 @@ static struct {
 	{ "p", "p EXP", "Print value of expression EXP.", cmd_p },
 	{ "x", "x n EXP (n is the number of 4B)", "Print value of address.", cmd_x },
 	{ "w", "w EXP", "Set a watchpoint for an expression.", cmd_w },
-	{ "d", "d n (n is the id of watchpoint)", "Delete nth watchpoint.", cmd_d }
+	{ "d", "d [n] (n is the id of watchpoint)", "Delete nth watchpoint.", cmd_d }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
