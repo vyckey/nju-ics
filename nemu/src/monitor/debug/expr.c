@@ -78,6 +78,8 @@ typedef struct token {
 
 Token tokens[32];
 int nr_token;
+#define tk_t(idx) (tokens[idx].type)
+#define tk_v(idx) (tokens[idx].value)
 
 static bool make_token(char *e) {
   int position = 0;
@@ -246,51 +248,34 @@ uint32_t opg_handle(bool *success) {
 	}
 	return stack[top].value;
 }
-/*
-static uint32_t eval(bool *success, int begin, int end) {
-	int op = end, par = 0;
-	int type;
+
+uint32_t expr_cal(bool *suc, int begin, int end) {
+	int par = 0, op = end, result = 0;
 	if (begin + 1 == end) {
-		if (prior(tokens[begin].type) == 0xf) *success = true;
-		else *success = false;
-		return cal(tokens[begin].type, tokens[begin].value, 0);
+		int type = tokens[begin].type;
+		if (type != TK_NUM && type != TK_REG) *suc = false;
+		else if (type == TK_NUM) result = tokens[begin].value;
+		else result = cal(type, tokens[begin].value, 0);
+		return result;
 	}
 	for (int i = begin; i < end; ++i) {
-		type = tokens[i].type;
-		int cur_p = prior(type);
-		if (par == 0) {
-			if (op == end) {
-				if (cur_p == 2) { op = i; break; }
-				else if (cur_p == 1) ;
-			}
-			else {
-				int last_p = prior(tokens[op].type);
-				if (last_p <= cur_p) break;
-				else if (cur_p == 0) break;
-				else {
-					cur_p = i;
-				}
-			}
-		}
-		else if (type == TK_LP) ++par;
+		int type = tokens[i].type;
+		if (type == TK_LP) ++par;
 		else if (type == TK_RP) --par;
+		else if (par == 0) {
+			if (type == TK_ADD || type == TK_SUB) { op = i; break; }
+		}
 	}
-	if (op == end) {
-		if (tokens[begin].type == TK_LP && par == 0)
-			return eval(success, begin + 1, end -1);
-		else { *success = false; return 0; }
+	if (par == 0) {
+		int x, y;
+		x = expr_cal(suc, begin, op);
+		if (!*suc) return 0;
+		y = expr_cal(suc, op + 1, end);
+		result = cal(tokens[op].type, x, y);
 	}
-	type = tokens[op].type;
-	if (op == begin)
-		return cal(type, eval(success, begin + 1, end), 0);
-	else {
-		bool pb;
-		uint32_t a = eval(&pb, begin, op), b = eval(success, op + 1, end);
-		*success = pb && *success;
-		return cal(type, a, b);
-	}
+	else *suc = false;
+	return result;
 }
-*/
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -298,7 +283,7 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  return opg_handle(success);
+  return expr_cal(success, 0, nr_token);
 }
 
 /*
