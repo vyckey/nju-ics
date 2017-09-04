@@ -275,6 +275,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 		if (tokens[begin].type == TK_LP) {
 			++begin;
 			--end;
+			printf("fsafsa\n");
 		}
 		x = expr_cal(suc, begin, op);
 		if (!*suc) return 0;
