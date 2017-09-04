@@ -78,8 +78,6 @@ typedef struct token {
 
 Token tokens[32];
 int nr_token;
-#define tk_t(idx) (tokens[idx].type)
-#define tk_v(idx) (tokens[idx].value)
 
 static bool make_token(char *e) {
   int position = 0;
@@ -153,20 +151,6 @@ static bool make_token(char *e) {
   return true;
 }
 
-static char opg_table[][10] = {
-// ||,&&,<,+,*,@,!,(,),e
-	{ '>', '<', '<', '<', '<', '<', '<', '<', '>', '<' },
-	{ '>', '>', '<', '<', '<', '<', '<', '<', '>', '<' },
-	{ '>', '>', '>', '<', '<', '<', '<', '<', '>', '<' },
-	{ '>', '>', '>', '>', '<', '<', '<', '<', '>', '<' },
-	{ '>', '>', '>', '>', '>', '<', '<', '<', '>', '<' },
-	{ '>', '>', '>', '>', '>', ' ', '<', '<', '>', '<' },
-	{ '>', '>', '>', '>', '>', ' ', '<', '<', '>', '<' },
-	{ '<', '<', '<', '<', '<', '<', '<', '<', '=', '<' },
-	{ '>', '>', '>', '>', '>', ' ', ' ', ' ', '>', ' ' },
-	{ '>', '>', '>', '>', '>', ' ', ' ', ' ', '>', ' ' }
-};
-
 static int prior(int type) {
 	int p;
 	switch(type) {
@@ -209,6 +193,82 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 	return result;
 } 
 
+uint32_t expr_cal(bool *suc, int begin, int end) {
+	int par = 0, op = end, result = 0;
+	if (begin >= end) { *suc = false; return 0; }
+	else if (begin + 1 == end) {
+		int type = tokens[begin].type;
+		*suc = true;
+		if (type == TK_NUM) result = tokens[begin].value;
+		else if (type == TK_REG) result = cal(type, tokens[begin].value, 0);
+		else *suc = false;
+		return result;
+	}
+	for (int i = begin; i < end; ++i) {
+		int type = tokens[i].type;
+		if (type == TK_LP) ++par;
+		else if (type == TK_RP) --par;
+		else if (par == 0 && prior(type) < 7) {
+			if (op == end) op = i;
+			else if (prior(type) < prior(tokens[op].type)) op = i;
+		}
+	}
+	if (par == 0) {
+		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
+		else {
+			int y = expr_cal(suc, op + 1, end);
+			if (!*suc) return 0;
+			if (op == begin) {
+				if (tokens[op].type == TK_REF || tokens[op].type == TK_NOT)
+					result = cal(tokens[op].type, y, 0);
+				else *suc = false;
+			}
+			else {
+				int x = expr_cal(suc, begin, op);
+				result = cal(tokens[op].type, x, y);
+			}
+		}
+	}
+	else *suc = false;
+	return result;
+}
+
+uint32_t expr(char *e, bool *success) {
+  if (!make_token(e)) {
+    *success = false;
+    return 0;
+  }
+
+  /* TODO: Insert codes to evaluate the expression. */
+  return expr_cal(success, 0, nr_token);
+}
+
+/*
+||,&&,<,+,*,@,!,(,)
+H -> H||I | I
+I -> I&&J | J
+J -> J<E | E
+
+E -> E+T | T
+T -> T*F | F
+F -> @P | !P | P
+P -> (H) | e
+
+
+static char opg_table[][10] = {
+// ||,&&,<,+,*,@,!,(,),e
+	{ '>', '<', '<', '<', '<', '<', '<', '<', '>', '<' },
+	{ '>', '>', '<', '<', '<', '<', '<', '<', '>', '<' },
+	{ '>', '>', '>', '<', '<', '<', '<', '<', '>', '<' },
+	{ '>', '>', '>', '>', '<', '<', '<', '<', '>', '<' },
+	{ '>', '>', '>', '>', '>', '<', '<', '<', '>', '<' },
+	{ '>', '>', '>', '>', '>', ' ', '<', '<', '>', '<' },
+	{ '>', '>', '>', '>', '>', ' ', '<', '<', '>', '<' },
+	{ '<', '<', '<', '<', '<', '<', '<', '<', '=', '<' },
+	{ '>', '>', '>', '>', '>', ' ', ' ', ' ', '>', ' ' },
+	{ '>', '>', '>', '>', '>', ' ', ' ', ' ', '>', ' ' }
+};
+
 uint32_t opg_handle(bool *success) {
 	int top = -1;
 	Token stack[32];
@@ -248,65 +308,4 @@ uint32_t opg_handle(bool *success) {
 	}
 	return stack[top].value;
 }
-
-uint32_t expr_cal(bool *suc, int begin, int end) {
-	int par = 0, op = end, result = 0;
-	printf("%d,%d\n", begin, end);
-	if (begin >= end) { *suc = false; return 0; }
-	else if (begin + 1 == end) {
-		int type = tokens[begin].type;
-		*suc = true;
-		if (type == TK_NUM) result = tokens[begin].value;
-		else if (type == TK_REG) result = cal(type, tokens[begin].value, 0);
-		else *suc = false;
-		return result;
-	}
-	for (int i = begin; i < end; ++i) {
-		int type = tokens[i].type;
-		if (type == TK_LP) ++par;
-		else if (type == TK_RP) --par;
-		else if (par == 0 && prior(type) < 7) {
-			if (op == end) op = i;
-			else if (prior(type) < prior(tokens[op].type)) op = i;
-		}
-	}
-	if (par == 0) {
-		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
-		else {
-			int y = expr_cal(suc, op + 1, end);
-			if (!*suc) return 0;
-			if (op == begin) {
-				if (tokens[op].type == TK_REF || tokens[op].type == TK_NOT)
-					result = cal(tokens[op].type, y, 0);
-				else *suc = false;
-			}
-			else {
-				int x = expr_cal(suc, begin, op);
-				result = cal(tokens[op].type, x, y);
-			}
-		}
-	}
-	else *suc = false;
-	return result;
-}
-uint32_t expr(char *e, bool *success) {
-  if (!make_token(e)) {
-    *success = false;
-    return 0;
-  }
-
-  /* TODO: Insert codes to evaluate the expression. */
-  return expr_cal(success, 0, nr_token);
-}
-
-/*
-||,&&,<,+,*,@,!,(,)
-H -> H||I | I
-I -> I&&J | J
-J -> J<E | E
-
-E -> E+T | T
-T -> T*F | F
-F -> @P | !P | P
-P -> (H) | e
 */
