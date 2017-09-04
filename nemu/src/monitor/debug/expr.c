@@ -270,18 +270,16 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 			else if (prior(type) < prior(tokens[op].type)) op = i;
 		}
 	}
-	printf("%d\n", op);
 	if (par == 0 && op != end) {
-		int x, y;
-		printf("begin%d\n",begin);
-		if (tokens[begin].type == TK_LP) {
-			++begin;
-			--end;
+		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
+		else {
+			int x, y;
+			printf("begin%d\n",begin);
+			x = expr_cal(suc, begin, op);
+			if (!*suc) return 0;
+			y = expr_cal(suc, op + 1, end);
+			result = cal(tokens[op].type, x, y);
 		}
-		x = expr_cal(suc, begin, op);
-		if (!*suc) return 0;
-		y = expr_cal(suc, op + 1, end);
-		result = cal(tokens[op].type, x, y);
 	}
 	else *suc = false;
 	return result;
