@@ -210,6 +210,7 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 uint32_t opg_handle(bool *success) {
 	int top = -1;
 	Token stack[32];
+	printf("%d\n", tokens[0].value);
 	for (int i = 1; i < nr_token; ++i) {
 		int j = top + 1, p;
 		do {
