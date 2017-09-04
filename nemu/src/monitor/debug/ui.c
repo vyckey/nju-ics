@@ -84,7 +84,8 @@ static int cmd_info(char *args) {
 static int cmd_p(char *args) {
 	bool success;
 	uint32_t value = expr(args, &success);
-	printf("%d\n", value);
+	if (success) printf("%d\n", value);
+	else printf("Invalid expr\n");
 	return 0;
 }
 
