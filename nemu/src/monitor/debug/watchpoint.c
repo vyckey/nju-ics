@@ -49,18 +49,13 @@ void free_wp(WP *wp) {
 	}
 }
 
-void clear_wp() {
+void travel_wp(void (*pfunc)(WP*)) {
 	WP *p = head;
 	while (p) {
-		free(p->expr_str);
+		pfunc(p);
 		p = p->next;
 	}
-	init_wp_pool();
 }
 
-void list_wp() {
-	WP *p = head;
-	while (p) {
-		p = p->next;
-	}
-}
+void wp_clear(WP *p) { if (p->expr_str) free(p->expr_str); }
+void wp_update(WP *p) { }
