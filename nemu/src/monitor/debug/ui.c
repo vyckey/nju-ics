@@ -74,7 +74,7 @@ static int cmd_info(char *args) {
 		}
 	}
 	else if (strcmp(arg1, "w") == 0) {
-		
+		list_wp();
 	}
 	else cmd_error(1, "info");
 	return 0;
@@ -96,11 +96,16 @@ static int cmd_x(char *args) {
 
 
 static int cmd_w(char *args) {
+	if (new_wp(args)) printf("Had add watchpoint.\n");
+	else printf("Failed.\n");
 	return 0;
 }
 
 
 static int cmd_d(char *args) {
+	char *arg1 = strtok(NULL, " ");
+	if (arg1) free_wp(atoi(arg1));
+	else clear_wp();
 	return 0;
 }
 
