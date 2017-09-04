@@ -234,13 +234,15 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 }
 
 uint32_t expr(char *e, bool *success) {
-  if (!make_token(e)) {
-    *success = false;
-    return 0;
-  }
-
-  /* TODO: Insert codes to evaluate the expression. */
-  return expr_cal(success, 0, nr_token);
+	nr_token = 0;
+	if (!make_token(e)) {
+		*success = false;
+		return 0;
+	}
+	/* TODO: Insert codes to evaluate the expression. */
+	
+	if (nr_token == 0) *success = false;
+	return expr_cal(success, 0, nr_token);
 }
 
 /*
