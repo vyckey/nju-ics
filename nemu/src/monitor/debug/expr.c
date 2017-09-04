@@ -207,7 +207,7 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 	return result;
 } 
 
-static uint32_t opg_handle(bool *success) {
+uint32_t opg_handle(bool *success) {
 	int top = -1;
 	Token stack[32];
 	for (int i = 1; i < nr_token; ++i) {
