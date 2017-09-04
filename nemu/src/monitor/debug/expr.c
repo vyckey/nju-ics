@@ -252,7 +252,8 @@ uint32_t opg_handle(bool *success) {
 uint32_t expr_cal(bool *suc, int begin, int end) {
 	int par = 0, op = end, result = 0;
 	printf("%d,%d\n", begin, end);
-	if (begin + 1 == end) {
+	if (begin >= end) { *suc = false; return 0; }
+	else if (begin + 1 == end) {
 		int type = tokens[begin].type;
 		*suc = true;
 		if (type == TK_NUM) result = tokens[begin].value;
