@@ -273,12 +273,17 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 	if (par == 0) {
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
-			int x, y;
-			printf("begin%d\n",begin);
-			x = expr_cal(suc, begin, op);
+			int y = expr_cal(suc, op + 1, end);
 			if (!*suc) return 0;
-			y = expr_cal(suc, op + 1, end);
-			result = cal(tokens[op].type, x, y);
+			if (op == begin) {
+				if (tokens[op].type == TK_REF || tokens[op].type == TK_NOT)
+					result = cal(tokens[op].type, y, 0);
+				else *suc = false;
+			}
+			else {
+				int x = expr_cal(suc, begin, op);
+				result = cal(tokens[op].type, x, y);
+			}
 		}
 	}
 	else *suc = false;
