@@ -37,7 +37,8 @@ WP* new_wp(char *str) {
 	return cur;
 }
 
-void free_wp(unsigned int no) {
+bool free_wp(unsigned int no) {
+	bool b = false;
 	WP *pre, *p;
 	pre = p = head;
 	while (p) {
@@ -48,10 +49,12 @@ void free_wp(unsigned int no) {
 			free_ = p;
 			if (free_->expr_str) free(free_->expr_str);
 			free_->expr_str = NULL;
+			b = true;
 		}
 		pre = p;
 		p = p->next;
 	}
+	return b;
 }
 
 void clear_wp() {
@@ -69,7 +72,7 @@ void list_wp() {
 	WP *p = head;
 	while (p) {
 		bool b;
-		printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: %x\n", p->NO, p->expr_str, p->last_value, expr(p->expr_str, &b));
+		printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: 0x%x\n", p->NO, p->expr_str, p->last_value, expr(p->expr_str, &b));
 		p = p->next;
 	}
 }
@@ -80,7 +83,7 @@ void update_wp() {
 		bool b;
 		uint32_t new_value = expr(p->expr_str, &b);
 		if (p->last_value != new_value) {
-			printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: %x\n", p->NO, p->expr_str, p->last_value, new_value);
+			printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: 0x%x\n", p->NO, p->expr_str, p->last_value, new_value);
 			p->last_value = new_value;
 		}
 		p = p->next;

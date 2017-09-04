@@ -106,7 +106,11 @@ static int cmd_w(char *args) {
 
 static int cmd_d(char *args) {
 	char *arg1 = strtok(NULL, " ");
-	if (arg1) free_wp(atoi(arg1));
+	unsigned int no = atoi(arg1);
+	if (arg1) {
+		if (free_wp(no)) printf("Had delete watchpoint %d.\n", no);
+		else printf("Failed\n");
+	}
 	else clear_wp();
 	return 0;
 }
