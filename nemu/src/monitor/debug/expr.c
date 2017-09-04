@@ -265,11 +265,12 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 		int type = tokens[i].type;
 		if (type == TK_LP) ++par;
 		else if (type == TK_RP) --par;
-		else if (par == 0) {
-			if (type == TK_ADD || type == TK_SUB) { op = i; break; }
+		else if (par == 0 && prior(type) < 7) {
+			if (op == end) op = i;
+			else if (prior(type) < prior(op)) op = i;
 		}
 	}
-	if (par == 0) {
+	if (par == 0 && op != end) {
 		int x, y;
 		x = expr_cal(suc, begin, op);
 		if (!*suc) return 0;
