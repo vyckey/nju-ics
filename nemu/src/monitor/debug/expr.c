@@ -235,7 +235,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 }
 
 uint32_t expr(char *e, bool *success) {
-	if (!make_token(e) || nr_token == 0) {
+	if (!make_token(e)) {
 		*success = false;
 		return 0;
 	}
