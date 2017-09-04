@@ -270,6 +270,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 			else if (prior(type) < prior(tokens[op].type)) op = i;
 		}
 	}
+	printf("%d\n", op);
 	if (par == 0 && op != end) {
 		int x, y;
 		printf("begin%d\n",begin);
