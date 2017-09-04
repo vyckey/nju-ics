@@ -34,28 +34,53 @@ WP* new_wp(char *str) {
 	return cur;
 }
 
-void free_wp(WP *wp) {
-	if (wp) {
-		WP *pre = head;
-		if (head == wp) head = wp->next;
-		else {
-			while (pre && pre->next != wp) pre = pre->next;
-			if (pre) pre->next = wp->next;
-			else assert(0); // error
-		}
-		wp->next = free_;
-		free_ = wp;
-		if (free_->expr_str) free(free_->expr_str);
-	}
-}
-
-void travel_wp(void (*pfunc)(WP*)) {
-	WP *p = head;
+void free_wp(unsigned int no) {
+	WP *pre, *p;
+	pre = p = head;
 	while (p) {
-		pfunc(p);
+		if (p->NO == no) {
+			if (pre == head) head = p->next;
+			else pre->next = p->next;
+			p->next = free_;
+			free_ = p;
+			if (free_->expr_str) free(free_->expr_str);
+			free_->expr_str = NULL;
+		}
+		pre = p;
 		p = p->next;
 	}
 }
 
-void wp_clear(WP *p) { if (p->expr_str) free(p->expr_str); }
-void wp_update(WP *p) { }
+void clear_wp() {
+	WP *p = head;
+	while (p) {
+		if (p->expr_str) {
+			free(p->expr_str);
+			p->expr_str = NULL;
+		}
+		p = p->next;
+	}
+	init_wp_pool();
+}
+
+void list_wp() {
+	WP *p = head;
+	while (p) {
+		bool b;
+		printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: %x\n", p->NO, p->expr_str, p->last_value, expr(p->expr_str, &b));
+		p = p->next;
+	}
+}
+
+void update_wp() {
+	WP *p = head;
+	while (p) {
+		bool b;
+		uint32_t new_value = expr(p->expr_str, &b);
+		if (p->last_value != new_value) {
+			printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: %x\n", p->NO, p->expr_str, p->last_value, new_value);
+			p->last_value = new_value;
+		}
+		p = p->next;
+	}
+}
