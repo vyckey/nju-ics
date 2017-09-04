@@ -84,6 +84,7 @@ static bool make_token(char *e) {
   int i;
   regmatch_t pmatch;
 
+  if (e == NULL) return false;
   nr_token = 0;
 
   while (e[position] != '\0') {
@@ -234,14 +235,12 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 }
 
 uint32_t expr(char *e, bool *success) {
-	nr_token = 0;
-	if (!make_token(e)) {
+	if (!make_token(e) || nr_token == 0) {
 		*success = false;
 		return 0;
 	}
 	/* TODO: Insert codes to evaluate the expression. */
 	
-	if (nr_token == 0) *success = false;
 	return expr_cal(success, 0, nr_token);
 }
 
