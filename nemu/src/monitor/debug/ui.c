@@ -96,12 +96,17 @@ static int cmd_x(char *args) {
 	char *arg2 = strtok(NULL, " ");
 	if (arg2) {
 		int n = atoi(arg1);
-		//int addr = expr(arg2, &b) & 0xfffffffc;
+		int addr = expr(arg2, &b) & 0xfffffffc;
 		if (b) {
 			for (int i = 0; i < n; ++i) {
-				//int *p = addr + (i << 2);
-				//printf("0x%08x: \t0x%08x\t0x%08x\t0x%08x0x%08x\n", *p, *p, *(p+1), *(p+2), *(p+3));
+				uint32_t data;
+				addr += (i << 2);
+				data = vaddr_read(addr, 4);
+				if (i == 0) printf("0x%08x: ", addr);
+				else if ((i & 0x3) == 0x3) printf("\n");
+				printf("%08x\t", data);
 			}
+			printf("\n");
 		}
 	}
 	else b = false;
