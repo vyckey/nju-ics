@@ -188,8 +188,8 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 		case TK_NE: result = a != b; break;
 		case TK_GE: result = a >= b; break;
 		case TK_GT: result = a > b; break;
-		case TK_REG: printf("%d\n", a); result = (a <= R_EDI ? reg_l(a) : cpu.eip);
-		case TK_REF: printf("%d\n", a); result = vaddr_read(a, 4); break;
+		case TK_REG: result = (a <= R_EDI ? reg_l(a) : cpu.eip);
+		case TK_REF: result = vaddr_read(a, 4); break;
 		default: ;
 	}
 	return result;
