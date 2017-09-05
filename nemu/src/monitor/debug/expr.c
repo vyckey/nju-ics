@@ -113,7 +113,6 @@ static bool make_token(char *e) {
 			if(type == TK_NUM) {
 				int v;
 				if (substr_start[0] == '0') {
-					printf("%s\n", substr_start);
 					if (substr_start[1] == 'x' || substr_start[1] == 'X')
 						sscanf(substr_start, "%x", &v);
 					else sscanf(substr_start, "%o", &v);
