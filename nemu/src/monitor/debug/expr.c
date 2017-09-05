@@ -132,7 +132,6 @@ static bool make_token(char *e) {
 				else if (strcmp(substr_start, "$eip") == 0)
 					tokens[nr_token].value = i;
 				else return false;
-				printf("%s %d\n", substr_start, tokens[nr_token].value);
 			}
 			e[position] = p;
 		}
@@ -189,7 +188,7 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 		case TK_NE: result = a != b; break;
 		case TK_GE: result = a >= b; break;
 		case TK_GT: result = a > b; break;
-		case TK_REG: result = (a <= R_EDI ? reg_l(a) : cpu.eip);
+		case TK_REG: printf("fdsafa\n"); result = (a <= R_EDI ? reg_l(a) : cpu.eip);
 		case TK_REF: printf("%d\n", a); result = vaddr_read(a, 4); break;
 		default: ;
 	}
