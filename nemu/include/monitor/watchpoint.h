@@ -16,5 +16,5 @@ WP *new_wp(char *str);
 bool free_wp(unsigned int no);
 void clear_wp();
 void list_wp();
-void update_wp();
+unsigned int update_wp();
 #endif

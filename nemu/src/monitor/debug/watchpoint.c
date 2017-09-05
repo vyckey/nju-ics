@@ -77,7 +77,8 @@ void list_wp() {
 	}
 }
 
-void update_wp() {
+unsigned update_wp() {
+	unsigned int nr_update = 0;
 	WP *p = head;
 	while (p) {
 		bool b;
@@ -85,7 +86,9 @@ void update_wp() {
 		if (p->last_value != new_value) {
 			printf("Watchpoint %d\nExpr: %s\nLast value: 0x%x\nCurrent value: 0x%x\n", p->NO, p->expr_str, p->last_value, new_value);
 			p->last_value = new_value;
+			++nr_update;
 		}
 		p = p->next;
 	}
+	return nr_update;
 }
