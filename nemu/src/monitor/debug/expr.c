@@ -197,7 +197,6 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 
 uint32_t expr_cal(bool *suc, int begin, int end) {
 	int par = 0, op = end, result = 0;
-	printf("%d,%d\n",begin,end);printf("d%d\n",tokens[1].value);
 	if (begin >= end) { *suc = false; return 0; }
 	else if (begin + 1 == end) {
 		int type = tokens[begin].type;
