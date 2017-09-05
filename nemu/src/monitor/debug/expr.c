@@ -132,6 +132,7 @@ static bool make_token(char *e) {
 				else if (strcmp(substr_start, "$eip") == 0)
 					tokens[nr_token].value = i;
 				else return false;
+				printf("%s %d\n", substr_start, tokens[nr_token].value);
 			}
 			e[position] = p;
 		}
