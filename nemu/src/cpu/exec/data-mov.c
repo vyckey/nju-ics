@@ -2,10 +2,8 @@
 
 make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
+  
   print_asm_template2(mov);
-
-rtlreg_t dest, src = 0x8001;
-  rtl_sext(&dest, &src, 2);print_asm("0x%x\n", dest);
 }
 
 make_EHelper(push) {
