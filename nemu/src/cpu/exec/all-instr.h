@@ -8,4 +8,4 @@ make_EHelper(inv);
 make_EHelper(nemu_trap);
 
 /* Much more instructions */
-make_EHelper(call);
+make_EHelper(call3);
