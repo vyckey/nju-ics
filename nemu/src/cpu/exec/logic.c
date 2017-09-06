@@ -14,7 +14,7 @@ make_EHelper(and) {
 
 make_EHelper(xor) {
   rtlreg_t result;
-  rtl_xor(&result, &id_dest->val, &id_src->val);printf("%x^%x %x\n", id_dest->val, id_src->val, result);
+  rtl_xor(&result, &id_dest->val, &id_src->val);
   operand_write(id_dest, &result);
 
   print_asm_template2(xor);
