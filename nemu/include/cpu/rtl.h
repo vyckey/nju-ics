@@ -137,7 +137,9 @@ static inline void rtl_not(rtlreg_t* dest) {
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
   width <<= 3;
-  if ((0x1 << (width - 1)) & *src1) *dest = ((-1 >> width) << width) | *src1;
+  if ((0x1 << (width - 1)) & *src1)
+    *dest = ((-1 >> width) << width) | *src1;
+  else *dest = *src1;
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
