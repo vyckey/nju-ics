@@ -102,7 +102,7 @@ static int cmd_x(char *args) {
 				uint32_t data;
 				addr += (i << 2);
 				data = vaddr_read(addr, 4);
-				if (i == 0) printf("0x%08x: ", addr);
+				if ((i & 0x3) == 0) printf("0x%08x: ", addr);
 				printf("0x%08x\t", data);
 				if ((i & 0x3) == 0x3) printf("\n");
 			}
