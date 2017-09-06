@@ -159,6 +159,11 @@ static inline void rtl_pop(rtlreg_t* dest) {
   rtlreg_t esp = reg_l(R_ESP);
   rtl_lm(dest, &esp, 4);
   reg_l(R_ESP) += 4;
+
+  rtl_lr_l(&t0, R_ESP);
+  rtl_lm(dest, &t0, 4);
+  rtl_addi(&t1, &t0, 4);
+  rtl_sr_l(R_ESP, &t1);
 }
 
 static inline void rtl_eq0(rtlreg_t* dest, const rtlreg_t* src1) {
