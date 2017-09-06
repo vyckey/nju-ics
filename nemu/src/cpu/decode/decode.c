@@ -309,5 +309,3 @@ void operand_write(Operand *op, rtlreg_t* src) {
   else if (op->type == OP_TYPE_MEM) { rtl_sm(&op->addr, op->width, src); }
   else { assert(0); }
 }
-
-/* Much more instructions */
