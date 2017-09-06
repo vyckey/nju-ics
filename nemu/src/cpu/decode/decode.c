@@ -311,7 +311,7 @@ void operand_write(Operand *op, rtlreg_t* src) {
 }
 
 /* Much more instructions */
-make_DHelper(call_rel32) {
+make_DHelper(call) {
 	decode_op_SI(eip, id_dest, false);
     decoding.jmp_eip = id_dest->simm + *eip;
 }

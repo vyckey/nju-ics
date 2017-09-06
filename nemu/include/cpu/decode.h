@@ -113,6 +113,6 @@ make_DHelper(out_a2I);
 make_DHelper(out_a2dx);
 
 /* Much more instructions */
-make_DHelper(call_rel32);
+make_DHelper(call);
 
 #endif
