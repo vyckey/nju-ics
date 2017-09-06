@@ -25,7 +25,7 @@ make_EHelper(pop);
 
 
 /* logic.c */
-
+make_EHelper(xor);
 
 /* prefix.c */
 
