@@ -5,7 +5,7 @@ make_EHelper(mov) {
   print_asm_template2(mov);
 
 rtlreg_t dest, src = 0x80;
-  rtl_sext(&dest, &src, 3);print_asm("0x%x\n", dest);
+  rtl_sext(&dest, &src, 1);print_asm("0x%x\n", dest);
 }
 
 make_EHelper(push) {
