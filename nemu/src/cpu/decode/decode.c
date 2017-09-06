@@ -309,3 +309,9 @@ void operand_write(Operand *op, rtlreg_t* src) {
   else if (op->type == OP_TYPE_MEM) { rtl_sm(&op->addr, op->width, src); }
   else { assert(0); }
 }
+
+/* Much more instructions */
+make_DHelper(call_rel32) {
+	decode_op_SI(eip, id_dest, false);
+    decoding.jmp_eip = id_dest->simm + *eip;
+}
