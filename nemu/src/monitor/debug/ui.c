@@ -100,7 +100,7 @@ static int cmd_x(char *args) {
 		if (b) {
 			for (int i = 0; i < n; ++i) {
 				uint32_t data;
-				addr += (i << 2);
+				addr = addr + (i << 2);
 				data = vaddr_read(addr, 4);
 				if ((i & 0x3) == 0) printf("0x%08x: ", addr);
 				printf("0x%08x\t", data);
