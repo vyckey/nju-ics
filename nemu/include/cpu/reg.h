@@ -36,6 +36,16 @@ typedef struct {
 			rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
 		};
 	};
+  struct {
+    uint32_t _CF:1;
+    uint32_t :5;
+    uint32_t _ZF:1;
+    uint32_t _SF:1;
+    uint32_t :1;
+    uint32_t _IF:1;
+    uint32_t :1;
+    uint32_t _OF:1;
+  } eflags;
 
   vaddr_t eip;
 
