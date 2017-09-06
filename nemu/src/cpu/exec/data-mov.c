@@ -3,6 +3,9 @@
 make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
+
+rtlreg_t dest, src = 0x80;
+  rtl_sext(&dest, &src, 3);print_asm("%x\n", dest);
 }
 
 make_EHelper(push) {
@@ -13,7 +16,7 @@ make_EHelper(push) {
 make_EHelper(pop) {
   rtl_pop(&id_dest->val);
   operand_write(id_dest, &id_dest->val);
-  
+
   print_asm_template1(pop);
 }
 
