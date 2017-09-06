@@ -6,3 +6,6 @@ make_EHelper(operand_size);
 
 make_EHelper(inv);
 make_EHelper(nemu_trap);
+
+/* Much more instructions */
+make_EHelper(call);
