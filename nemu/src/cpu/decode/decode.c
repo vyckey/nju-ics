@@ -38,8 +38,9 @@ static inline make_DopHelper(SI) {
    *
    op->simm = ???
    */
-  TODO();
-
+  op->simm = instr_fetch(eip, op->width);
+  if (op->width == 1) op->simm = (op->simm << 3 >> 3);
+  printf("%x\n", (0xff<<3>>3));
   rtl_li(&op->val, op->simm);
 
 #ifdef DEBUG
