@@ -15,7 +15,7 @@ make_EHelper(sub);
 
 /* control.c */
 make_EHelper(call);
-
+make_EHelper(ret);
 
 /* data-mov.c */
 make_EHelper(push);
