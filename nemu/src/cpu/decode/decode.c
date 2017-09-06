@@ -71,7 +71,7 @@ static inline make_DopHelper(r) {
   op->type = OP_TYPE_REG;
   op->reg = decoding.opcode & 0x7;
   if (load_val) {
-    rtl_lr(&op->val, op->reg, op->width);
+    rtl_lr(&op->val, op->reg, op->width);printf("%d\n", op->val);
   }
 
 #ifdef DEBUG
@@ -180,7 +180,7 @@ make_DHelper(I) {
 }
 
 make_DHelper(r) {
-  decode_op_r(eip, id_dest, true);printf("%d\n", id_dest->val);
+  decode_op_r(eip, id_dest, true);
 }
 
 make_DHelper(E) {
