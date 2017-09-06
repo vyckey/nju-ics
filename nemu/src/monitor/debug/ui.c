@@ -70,7 +70,7 @@ static int cmd_info(char *args) {
 	else if (strcmp(arg1, "r") == 0) {
 		printf("eip\t0x%08x\n", cpu.eip);
 		for (int i = R_EAX; i <= R_EDI; ++i) {
-			printf("%s\t%d\t0x%08x\n", regsl[i], reg_l(i), reg_l(i));
+			printf("%s\t0x%08x\t%d\n", regsl[i], reg_l(i), reg_l(i));
 		}
 	}
 	else if (strcmp(arg1, "w") == 0) {
