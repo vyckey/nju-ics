@@ -39,7 +39,7 @@ static inline make_DopHelper(SI) {
    op->simm = ???
    */
   op->simm = instr_fetch(eip, op->width);
-  if (op->width == 1 && (op->simm & 0x80)) op->simm |= 0xffffff00;
+  if (op->width == 1 && (op->simm & 0x80)) op->simm |= ((-1 >> 8) << 8);
   rtl_li(&op->val, op->simm);
 
 #ifdef DEBUG
@@ -311,7 +311,3 @@ void operand_write(Operand *op, rtlreg_t* src) {
 }
 
 /* Much more instructions */
-make_DHelper(call) {
-	decode_op_SI(eip, id_dest, false);
-    decoding.jmp_eip = id_dest->simm + *eip;
-}
