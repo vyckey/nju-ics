@@ -1,5 +1,5 @@
 #include "cpu/exec.h"
 
 make_EHelper(call_rel32) {
-	print_asm("call");
+	print_asm_template2(call);
 }
