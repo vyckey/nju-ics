@@ -7,13 +7,14 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  rtlreg_t d = id_dest->val;printf("%d-%d\n", d, id_src->val);
-  rtl_sub(&id_dest->val, &id_dest->val, &id_src->val);
-  rtl_update_ZFSF(&id_dest->val, id_dest->width);
-  if ((d ^ id_src->val) & (~(id_src->val ^ id_dest->val)) & 0x80000000) {
+  rtlreg_t d = id_dest->val, result;
+  rtl_sub(&result, &id_dest->val, &id_src->val);
+  rtl_update_ZFSF(&result, id_dest->width);
+  if ((d ^ id_src->val) & (~(id_src->val ^ result)) & 0x80000000) {
     d = 0x1;
     rtl_set_OF(&d);
   }
+  operand_write(id_dest, &result);
   print_asm_template2(sub);
 }
 
