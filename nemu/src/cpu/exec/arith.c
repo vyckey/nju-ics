@@ -8,7 +8,7 @@ make_EHelper(add) {
 
 make_EHelper(sub) {
   rtlreg_t d = id_dest->val;printf("%d-%d\n", d, id_src->val);
-  rtl_sub(&id_dest->val, &id_dest->val, &id_src->val);
+  rtl_sub(&id_dest->val, &id_dest->val, &id_src->val);printf("%d-%d\n", d, id_src->val);
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
   if ((d ^ id_src->val) & (~(id_src->val ^ id_dest->val)) & 0x80000000) {
     d = 0x1;
