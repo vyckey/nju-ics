@@ -10,6 +10,7 @@ make_EHelper(nemu_trap);
 /* arith.c */
 make_EHelper(sub);
 make_EHelper(inc);
+make_EHelper(dec);
 
 /* cc. c*/
 
