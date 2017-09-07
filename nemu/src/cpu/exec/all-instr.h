@@ -26,6 +26,7 @@ make_EHelper(lea);
 
 
 /* logic.c */
+make_EHelper(test);
 make_EHelper(xor);
 make_EHelper(and);
 make_EHelper(or);
