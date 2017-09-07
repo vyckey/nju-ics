@@ -7,14 +7,15 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  rtlreg_t d = id_dest->val, result;
-  rtl_sub(&result, &id_dest->val, &id_src->val);
-  rtl_update_ZFSF(&result, id_dest->width);
-  if ((d ^ id_src->val) & (~(id_src->val ^ result)) & 0x80000000) {
-    d = 0x1;
-    rtl_set_OF(&d);
+  t0 = id_dest->val;
+  rtl_sub(&t1, &id_dest->val, &id_src->val);
+  rtl_update_ZFSF(&t1, id_dest->width);
+  if ((t0 ^ id_src->val) & (~(id_src->val ^ t1)) & 0x80000000) {
+    t0 = 0x1;
+    rtl_set_OF(&t0);
   }
-  operand_write(id_dest, &result);
+  operand_write(id_dest, &t1);
+
   print_asm_template2(sub);
 }
 
