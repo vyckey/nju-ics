@@ -27,6 +27,7 @@ make_EHelper(lea);
 
 /* logic.c */
 make_EHelper(xor);
+make_EHelper(and);
 
 /* prefix.c */
 
