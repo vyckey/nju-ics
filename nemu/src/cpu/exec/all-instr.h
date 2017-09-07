@@ -28,6 +28,10 @@ make_EHelper(lea);
 /* logic.c */
 make_EHelper(xor);
 make_EHelper(and);
+make_EHelper(or);
+make_EHelper(sar);
+make_EHelper(shl);
+make_EHelper(shr);
 
 /* prefix.c */
 
