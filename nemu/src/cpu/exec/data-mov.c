@@ -2,7 +2,8 @@
 
 make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
-  
+  t0=0xf0;
+  rtl_sext(&t0, &t0, 1);printf("%x\n", t0);
   print_asm_template2(mov);
 }
 
@@ -37,13 +38,13 @@ make_EHelper(leave) {
 }
 
 make_EHelper(cltd) {
-  if (decoding.is_operand_size_16) {
+  if (decoding.is_operand_size_16) {//cwd
     rtl_lr_w(&t0, R_EAX);
     if (t0 < 0) rtl_li(&t1, 0xffff);
     else rtl_li(&t1, 0);
     rtl_sr_w(R_EDX, &t1);
   }
-  else {
+  else {//cdq
     rtl_lr_l(&t0, R_EAX);
     if (t0 < 0) rtl_li(&t1, 0xffffffff);
     else rtl_li(&t1, 0);
