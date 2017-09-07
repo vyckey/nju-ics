@@ -38,7 +38,7 @@ make_EHelper(shr);
 
 
 /* special.c */
-
+make_EHelper(nop);
 
 /* system.c*/
 
