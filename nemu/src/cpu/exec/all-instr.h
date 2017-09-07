@@ -11,6 +11,7 @@ make_EHelper(nemu_trap);
 make_EHelper(sub);
 make_EHelper(inc);
 make_EHelper(dec);
+make_EHelper(cmp);
 
 /* cc. c*/
 
