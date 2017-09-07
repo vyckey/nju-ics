@@ -2,8 +2,6 @@
 
 make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
-  t0=0xf0;
-  rtl_sext(&t0, &t0, 1);printf("%x\n", t0);
   print_asm_template2(mov);
 }
 
