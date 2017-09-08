@@ -219,7 +219,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 			else if (prior(type) < prior(tokens[op].type)) op = i;
 		}
 	}
-	if (par == 0) {printf("%d\n", tokens[0].type==TK_DEREF);
+	if (par == 0) {
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
 			if (op != begin) {
@@ -232,7 +232,10 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 				else if (i != end && type == TK_RP) --par;
 				else if (par == 0) {
 					if (op_type == TK_DEREF || op_type == TK_NEG) {
-
+						int y = expr_cal(suc, op + 1, end);
+						if (!*suc) return 0;
+						result = cal(op_type, y, 0);
+						return result;
 					}
 					else if (i == end || prior(type) == prior(op_type)) {
 						int y = expr_cal(suc, op + 1, i);
