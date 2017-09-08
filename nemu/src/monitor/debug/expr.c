@@ -75,7 +75,7 @@ typedef struct token {
 	uint32_t value;
 } Token;
 
-Token tokens[32];
+Token tokens[64];
 int nr_token;
 
 static bool make_token(char *e) {
@@ -104,7 +104,7 @@ static bool make_token(char *e) {
 
 		int type = rules[i].token_type;
 		if (type == TK_NOTYPE) continue;
-		if (nr_token < 32) tokens[nr_token].type = type;
+		if (nr_token < 64) tokens[nr_token].type = type;
 		else assert(0); // Out of range of length of regexp tokens
         if (type == TK_NUM || type == TK_REG) {
 			char p = e[position];
