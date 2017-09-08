@@ -18,7 +18,13 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
-  TODO();
+  int width = decoding.is_operand_size_16 ? 2 : 4;
+  rtl_lr(&t0, R_ESP, width);
+  for (int i = R_EAX; i <= R_EDI; ++i) {
+    if (i == R_ESP) rtl_mv(&t1, &t0);
+    else rtl_lr(&t1, i, width);
+    rtl_push(&t1, width);
+  }
 
   print_asm("pusha");
 }
