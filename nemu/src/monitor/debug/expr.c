@@ -15,7 +15,7 @@ enum {
 	TK_NOT, TK_AND,TK_OR,
 	TK_ADD, TK_SUB, TK_MUL, TK_DIV, TK_MOD,
 	TK_LP, TK_RP,
-	TK_NUM, TK_REG, TK_REF
+	TK_NUM, TK_REG, TK_DEREF, TK_NEG
 };
 
 static struct rule {
@@ -39,14 +39,13 @@ static struct rule {
   {"!", TK_NOT},		// not
   {"\\(", TK_LP},		// (
   {"\\)", TK_RP},		// )
-  {"@", TK_REF},		// @
   {"\\+", TK_ADD},		// add
   {"-", TK_SUB},		// sub
   {"\\*", TK_MUL},		// mul
   {"/", TK_DIV},		// div
   {"%", TK_MOD},		// mod
   {"\\$[a-z]{3,3}", TK_REG},
-  {"(0[xX][0-9a-fA-F]+)|([1-9][0-9]+)|([0-7]+)", TK_NUM},
+  {"(0[xX][0-9a-fA-F]+)|([1-9][0-9]*)|([0-7]+)", TK_NUM},
   /* {"[a-zA-Z_][0-9a-zA-Z_]*", TK_EXP} */
 };
 
@@ -76,7 +75,7 @@ typedef struct token {
 	uint32_t value;
 } Token;
 
-Token tokens[32];
+Token tokens[64];
 int nr_token;
 
 static bool make_token(char *e) {
@@ -105,7 +104,7 @@ static bool make_token(char *e) {
 
 		int type = rules[i].token_type;
 		if (type == TK_NOTYPE) continue;
-		if (nr_token < 32) tokens[nr_token].type = type;
+		if (nr_token < 64) tokens[nr_token].type = type;
 		else assert(0); // Out of range of length of regexp tokens
         if (type == TK_NUM || type == TK_REG) {
 			char p = e[position];
@@ -135,6 +134,11 @@ static bool make_token(char *e) {
 			}
 			e[position] = p;
 		}
+		else if (nr_token == 0 || 
+			!(TK_RP <= tokens[nr_token-1].type && tokens[nr_token-1].type <= TK_REG)) {
+			if (type == TK_SUB) tokens[nr_token].type = TK_NEG;
+			else if (type == TK_MUL) tokens[nr_token].type = TK_DEREF;
+		}
 		switch (type) {
 			default: ;//TODO();
         }
@@ -157,15 +161,14 @@ static int prior(int type) {
 	switch(type) {
 		case TK_OR: p = 0; break;
 		case TK_AND: p = 1; break;
-		case TK_LE: case TK_LS: case TK_EQ: case TK_NE: case TK_GE:	case TK_GT:
-			p = 2; break;
-		case TK_ADD: case TK_SUB: p = 3; break;
-		case TK_MUL: case TK_DIV: case TK_MOD: p = 4; break;
-		case TK_REF: p = 5; break;
+		case TK_EQ: case TK_NE: p = 2; break;
+		case TK_LE: case TK_LS: case TK_GE:	case TK_GT: p = 3; break;
+		case TK_ADD: case TK_SUB: p = 4; break;
+		case TK_MUL: case TK_DIV: case TK_MOD: p = 5; break;
 		case TK_NOT: p = 6; break;
-		case TK_LP: p = 7; break;
-		case TK_RP: p = 8; break;
-		case TK_NUM: case TK_REG: p = 9; break; 
+		case TK_DEREF: case TK_NEG: p = 7; break;
+		case TK_LP: case TK_RP: p = 8; break;
+		case TK_NUM: case TK_REG: p = 9; break;
 		default: p = 0xf;
 	}
 	return p;
@@ -189,14 +192,15 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 		case TK_GE: result = a >= b; break;
 		case TK_GT: result = a > b; break;
 		case TK_REG: result = (a <= R_EDI ? reg_l(a) : cpu.eip); break;
-		case TK_REF: result = vaddr_read(a, 4); break;
+		case TK_DEREF: result = vaddr_read(a, 4); break;
+		case TK_NEG: result = -a;
 		default: ;
 	}
 	return result;
 } 
 
 uint32_t expr_cal(bool *suc, int begin, int end) {
-	int par = 0, op = end, result = 0;
+	int par = 0, op = end, result = 0;//printf("%d,%d\n",begin,end);
 	if (begin >= end) { *suc = false; return 0; }
 	else if (begin + 1 == end) {
 		int type = tokens[begin].type;
@@ -210,7 +214,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 		int type = tokens[i].type;
 		if (type == TK_LP) ++par;
 		else if (type == TK_RP) --par;
-		else if (par == 0 && prior(type) < 7) {
+		else if (par == 0 && prior(type) < 8) {
 			if (op == end) op = i;
 			else if (prior(type) < prior(tokens[op].type)) op = i;
 		}
@@ -218,16 +222,28 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 	if (par == 0) {
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
-			int y = expr_cal(suc, op + 1, end);
-			if (!*suc) return 0;
-			if (op == begin) {
-				if (tokens[op].type == TK_REF || tokens[op].type == TK_NOT)
-					result = cal(tokens[op].type, y, 0);
-				else *suc = false;
+			if (op != begin) {
+				result = expr_cal(suc, begin, op);
+				if (!*suc) return 0;
 			}
-			else {
-				int x = expr_cal(suc, begin, op);
-				result = cal(tokens[op].type, x, y);
+			for (int i = op + 1; i <= end; ++i) {
+				int type = tokens[i].type, op_type = tokens[op].type;
+				if (i != end && type == TK_LP) ++par;
+				else if (i != end && type == TK_RP) --par;
+				else if (par == 0) {
+					if (op_type == TK_DEREF || op_type == TK_NEG) {
+						int y = expr_cal(suc, op + 1, end);
+						if (!*suc) return 0;
+						result = cal(op_type, y, 0);
+						return result;
+					}
+					else if (i == end || prior(type) == prior(op_type)) {
+						int y = expr_cal(suc, op + 1, i);
+						if (!*suc) return 0;
+						result = cal(op_type, result, y);
+						op = i;
+					}
+				}
 			}
 		}
 	}
