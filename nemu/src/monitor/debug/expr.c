@@ -232,7 +232,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 				else if (par == 0 && (i == end || prior(type) == prior(op_type))) {
 					int y = expr_cal(suc, op + 1, i);
 					if (!*suc) return 0;
-					if (unary) {printf("%d===%d\n",begin,end);
+					if (unary) {
 						if (op_type == TK_NOT) result = cal(op_type, y, 0);
 						else if (op_type == TK_MUL) result = cal(TK_REF, y, 0);
 						else if (op_type == TK_SUB) result = cal(TK_SUB, 0, y);
@@ -241,7 +241,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 							return 0;
 						}
 					}
-					else {
+					else {printf("%d===%d\n",begin,end);
 						result = cal(op_type, result, y);
 						op = i;
 					}
