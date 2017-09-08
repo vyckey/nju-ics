@@ -228,8 +228,8 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 			for (int i = op + 1; i <= end; ++i) {
 				int op_type = prior(tokens[op].type);
 				if (i == end || prior(tokens[i].type) == op_type) {
-					int y = expr_cal(suc, op + 1, i);printf("fdsafsdas\n");
-					if (!*suc) return 0;
+					int y = expr_cal(suc, op + 1, i);
+					if (!*suc) return 0;printf("fdsafda\n");
 					if (unary) {
 						if (op_type == TK_NOT) result = cal(op_type, y, 0);
 						else if (op_type == TK_MUL) result = cal(TK_REF, y, 0);
