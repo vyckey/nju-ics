@@ -1,21 +1,39 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
+  rtl_mv(&t0, &id_dest->val);
+  rtl_mv(&t1, &id_src->val);
   rtl_add(&id_dest->val, &id_dest->val, &id_src->val);
   operand_write(id_dest, &id_dest->val);
+
+  rtl_update_ZFSF(&id_dest->val, id_dest->width);
+  rtl_xor(&t2, &t0, &t1);
+  rtl_not(&t2);
+  rtl_xor(&t3, &t0, &id_dest->val);
+  rtl_and(&t3, &t2, &t3);
+  rtl_msb(&t3, &t3, id_dest->width);
+  rtl_set_OF(&t3);
+
+  rtl_sltu(&t3, &id_dest->val, &t0);
+  rtl_set_CF(&t3);
   print_asm_template2(add);
 }
 
 make_EHelper(sub) {
-  t0 = id_dest->val;
-  rtl_sub(&t1, &id_dest->val, &id_src->val);
-  rtl_update_ZFSF(&t1, id_dest->width);
-  if ((t0 ^ id_src->val) & (~(id_src->val ^ t1)) & 0x80000000) {
-    t0 = 0x1;
-    rtl_set_OF(&t0);
-  }
-  operand_write(id_dest, &t1);
+  rtl_mv(&t0, &id_dest->val);
+  rtl_mv(&t1, &id_src->val);
+  rtl_sub(&id_dest->val, &id_dest->val, &id_src->val);
+  operand_write(id_dest, &id_dest->val);
 
+  rtl_update_ZFSF(&t1, id_dest->width);
+  rtl_xor(&t2, &t0, &t1);
+  rtl_xor(&t3, &t0, &id_dest->val);
+  rtl_and(&t3, &t2, &t3);
+  rtl_msb(&t3, &t3, id_dest->width);
+  rtl_set_OF(&t3);
+
+  rtl_sltu(&t3, &t0, &id_dest->val);
+  rtl_set_CF(&t3);
   print_asm_template2(sub);
 }
 

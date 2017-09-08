@@ -180,21 +180,21 @@ static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
   assert(0 < width && width <= 4);
   width <<= 3;
-  *dest = *src1 & (~((-1 << width) >> width));
+  *dest = (*src1 >> (width - 1)) & 0x1;
 }
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  uint32_t t;
   width <<= 3;
-  t = ~((-1 >> width) << width);
-  cpu.eflags._ZF = ((*result & t) == 0);
+  rtl_li(&t0, (*result & (~(-1 << width))) == 0);
+  rtl_set_ZF(&t0);
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
   width <<= 3;
-  cpu.eflags._SF = ((*result & (0x1 << (width - 1))) != 0);
+  rtl_li(&t0, (*result & (0x1 << (width - 1))) != 0);
+  rtl_set_SF(&t0);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
