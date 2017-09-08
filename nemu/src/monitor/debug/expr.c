@@ -226,8 +226,10 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 			}
 			else unary = true;
 			for (int i = op + 1; i <= end; ++i) {
-				int op_type = tokens[op].type;
-				if (i == end || prior(tokens[i].type) == prior(op_type)) {
+				int type = tokens[i].type, op_type = tokens[op].type;
+				if (type == TK_LP) ++par;
+				else if (type == TK_RP) --par;
+				else if (par == 0 && (i == end || prior(type) == prior(op_type))) {
 					int y = expr_cal(suc, op + 1, i);
 					if (!*suc) return 0;
 					if (unary) {
