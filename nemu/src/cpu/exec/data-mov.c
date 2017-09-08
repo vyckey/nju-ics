@@ -30,13 +30,22 @@ make_EHelper(pusha) {
 }
 
 make_EHelper(popa) {
-  TODO();
+  int width = decoding.is_operand_size_16 ? 2 : 4;
+  for (int i = R_EDI; i >= R_EAX; --i) {
+    if (i != R_ESP) {
+      rtl_pop(&t0, width);
+      rtl_sr(i, width, &t0);
+    }
+  }
 
   print_asm("popa");
 }
 
 make_EHelper(leave) {
   TODO();
+  int width = decoding.is_operand_size_16 ? 2 : 4;
+  rtl_pop(&t0, width);
+  rtl_sr(R_EBP, width, &t0);
 
   print_asm("leave");
 }
@@ -59,11 +68,14 @@ make_EHelper(cltd) {
 }
 
 make_EHelper(cwtl) {
+  rtl_lr_w(&t0, R_EAX);
   if (decoding.is_operand_size_16) {
-    TODO();
+    rtl_sext(&t0, &t0, 1);
+    rtl_sr_w(R_EAX, &t0);
   }
   else {
-    TODO();
+    rtl_sext(&t0, &t0, 2);
+    rtl_sr_l(R_EAX, &t0);
   }
 
   print_asm(decoding.is_operand_size_16 ? "cbtw" : "cwtl");

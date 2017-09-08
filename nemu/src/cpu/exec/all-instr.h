@@ -35,13 +35,13 @@ make_EHelper(ret);//far
 make_EHelper(call_rm);
 
 /* data-mov.c */
-make_EHelper(push);//seg
-make_EHelper(pop);
+make_EHelper(push);//seg,m
+make_EHelper(pop);//seg,m
 make_EHelper(pusha);
 make_EHelper(popa);
-make_EHelper(leave);
-make_EHelper(cltd);
-make_EHelper(cwtl);
+make_EHelper(leave);//todo
+make_EHelper(cltd);//cwd/cdq
+make_EHelper(cwtl);//cbw/cwde
 make_EHelper(movsx);
 make_EHelper(movzx);
 make_EHelper(lea);
