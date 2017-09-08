@@ -19,7 +19,7 @@ make_EHelper(sbb);
 make_EHelper(mul);
 make_EHelper(imul1);
 make_EHelper(imul2);
-make_EHelper(imul3);
+make_EHelper(imul3);//6b, 69
 make_EHelper(div);
 make_EHelper(idiv);
 
