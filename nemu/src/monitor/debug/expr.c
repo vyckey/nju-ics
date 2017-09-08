@@ -214,14 +214,14 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 		int type = tokens[i].type;
 		if (type == TK_LP) ++par;
 		else if (type == TK_RP) --par;
-		else if (par == 0 && prior(type) < 7) {
+		else if (par == 0 && prior(type) < 8) {
 			if (op == end) op = i;
 			else if (prior(type) < prior(tokens[op].type)) op = i;
 		}
 	}
 	if (par == 0) {
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
-		else {printf("-%d\n", end);
+		else {
 			if (op != begin) {
 				result = expr_cal(suc, begin, op);
 				if (!*suc) return 0;
