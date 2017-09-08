@@ -94,8 +94,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        /* Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start); */
+        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+            i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -220,6 +220,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
 			if (op != begin) result = expr_cal(suc, begin, op);
+			if (!*suc) return 0;
 			for (int i = op + 1; i <= end; ++i) {
 				if (i == end || prior(tokens[i].type) == prior(tokens[op].type)) {
 					int y = expr_cal(suc, op + 1, i);
