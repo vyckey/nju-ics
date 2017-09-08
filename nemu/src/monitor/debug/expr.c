@@ -219,18 +219,28 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 	if (par == 0) {
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
+			bool unary = false;
 			if (op != begin) {
 				result = expr_cal(suc, begin, op);
 				if (!*suc) return 0;
 			}
+			else unary = true;
 			for (int i = op + 1; i <= end; ++i) {
-				if (i == end || prior(tokens[i].type) == prior(tokens[op].type)) {
+				int op_type = prior(tokens[op].type);
+				if (i == end || prior(tokens[i].type) == op_type) {
 					int y = expr_cal(suc, op + 1, i);
 					if (!*suc) return 0;
-					if (tokens[op].type == TK_REF || tokens[op].type == TK_NOT)
-						result = cal(tokens[op].type, y, 0);
+					if (unary) {
+						if (op_type == TK_NOT) result = cal(op_type, y, 0);
+						else if (op_type == TK_MUL) result = cal(TK_REF, y, 0);
+						else if (op_type == TK_SUB) result = cal(TK_SUB, 0, y);
+						else {
+							*suc = false;
+							return 0;
+						}
+					}
 					else {
-						result = cal(tokens[op].type, result, y);
+						result = cal(op_type, result, y);
 						op = i;
 					}
 				}
