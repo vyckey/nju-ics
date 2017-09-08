@@ -161,8 +161,8 @@ static int prior(int type) {
 			p = 2; break;
 		case TK_ADD: case TK_SUB: p = 3; break;
 		case TK_MUL: case TK_DIV: case TK_MOD: p = 4; break;
-		case TK_REF: p = 5; break;
-		case TK_NOT: p = 6; break;
+		case TK_NOT: p = 5; break;
+		case TK_REF: p = 6; break;
 		case TK_LP: p = 7; break;
 		case TK_RP: p = 8; break;
 		case TK_NUM: case TK_REG: p = 9; break; 
@@ -223,7 +223,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 			if (!*suc) return 0;
 			for (int i = op + 1; i <= end; ++i) {
 				if (i == end || prior(tokens[i].type) == prior(tokens[op].type)) {
-					int y = expr_cal(suc, op + 1, i);
+					int y = expr_cal(suc, op + 1, i);printf("jfsifi\n");
 					if (!*suc) return 0;
 					if (tokens[op].type == TK_REF || tokens[op].type == TK_NOT)
 						result = cal(tokens[op].type, y, 0);
