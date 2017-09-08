@@ -241,10 +241,10 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 							return 0;
 						}
 					}
-					else {printf("%d===%d\n",begin,end);
+					else {
 						result = cal(op_type, result, y);
 						op = i;
-					}
+					}printf("%d===%d\n",begin,end);
 				}
 			}
 		}
