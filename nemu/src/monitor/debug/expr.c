@@ -219,7 +219,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 			else if (prior(type) < prior(tokens[op].type)) op = i;
 		}
 	}
-	if (par == 0) {printf("%d\n", tokens[1].type==TK_DEREF);
+	if (par == 0) {printf("%d\n", tokens[0].type==TK_DEREF);
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
 			if (op != begin) {
