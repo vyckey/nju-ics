@@ -232,7 +232,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 				else if (i != end && type == TK_RP) --par;
 				else if (par == 0) {
 					if (op_type == TK_DEREF || op_type == TK_NEG) {
-						int y = expr_cal(suc, op + 1, end);
+						int y = expr_cal(suc, op + 1, end);printf("-%d\n", end);
 						if (!*suc) return 0;
 						result = cal(op_type, y, 0);
 						return result;
