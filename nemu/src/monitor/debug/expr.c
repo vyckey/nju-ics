@@ -136,6 +136,7 @@ static bool make_token(char *e) {
 		}
 		else if (nr_token == 0 || 
 			!(tokens[nr_token-1].type <= TK_RP && tokens[nr_token-1].type <= TK_REG)) {
+			printf("fdsafsa\n");
 			if (type == TK_SUB) tokens[nr_token].type = TK_NEG;
 			else if (type == TK_MUL) tokens[nr_token].type = TK_DEREF;
 		}
