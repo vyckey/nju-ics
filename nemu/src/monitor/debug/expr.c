@@ -219,8 +219,10 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 	if (par == 0) {
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
-			if (op != begin) result = expr_cal(suc, begin, op);printf("fdsfds\n");
-			if (!*suc) return 0;
+			if (op != begin) {
+				result = expr_cal(suc, begin, op);
+				if (!*suc) return 0;
+			}
 			for (int i = op + 1; i <= end; ++i) {
 				if (i == end || prior(tokens[i].type) == prior(tokens[op].type)) {
 					int y = expr_cal(suc, op + 1, i);
