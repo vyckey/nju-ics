@@ -246,8 +246,8 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 						op = i;
 					}
 				}
-			}
-		}printf("fdsoa\n");
+			}printf("fdsoa\n");
+		}
 	}
 	else *suc = false;
 	return result;
