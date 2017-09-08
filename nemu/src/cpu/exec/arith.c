@@ -1,8 +1,8 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-  TODO();
-
+  rtl_add(&id_dest->val, &id_dest->val, &id_src->val);
+  operand_write(id_dest, &id_dest->val);
   print_asm_template2(add);
 }
 
@@ -40,7 +40,8 @@ make_EHelper(dec) {
 }
 
 make_EHelper(neg) {
-  TODO();
+  id_src->val = - id_src->val;
+  operand_write(id_dest, &id_src->val);
 
   print_asm_template1(neg);
 }
