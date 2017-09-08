@@ -196,7 +196,7 @@ static uint32_t cal(int type, uint32_t a, uint32_t b) {
 } 
 
 uint32_t expr_cal(bool *suc, int begin, int end) {
-	int par = 0, op = end, result = 0;printf("%d,%d\n",begin,end);
+	int par = 0, op = end, result = 0, num = 0;printf("%d,%d\n",begin,end);
 	if (begin >= end) { *suc = false; return 0; }
 	else if (begin + 1 == end) {
 		int type = tokens[begin].type;
@@ -212,22 +212,25 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 		else if (type == TK_RP) --par;
 		else if (par == 0 && prior(type) < 7) {
 			if (op == end) op = i;
-			else if (prior(type) < prior(tokens[op].type)) op = i;
+			else if (prior(type) < prior(tokens[op].type)) { op = i;num = 1; }
+			else if (prior(type) == prior(tokens[op].type)) ++num;
 		}
 	}
 	if (par == 0) {
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
-			int y = expr_cal(suc, op + 1, end);
-			if (!*suc) return 0;
-			if (op == begin) {
-				if (tokens[op].type == TK_REF || tokens[op].type == TK_NOT)
-					result = cal(tokens[op].type, y, 0);
-				else *suc = false;
-			}
-			else {
-				int x = expr_cal(suc, begin, op);
-				result = cal(tokens[op].type, x, y);
+			if (op != begin) result = expr_cal(suc, begin, op);
+			for (int i = op + 1; i <= end; ++i) {
+				if (i == end || prior(tokens[i].type) == prior(tokens[op].type)) {
+					int y = expr_cal(suc, op + 1, i);
+					if (!*suc) return 0;
+					if (tokens[op].type == TK_REF || tokens[op].type == TK_NOT)
+						result = cal(tokens[op].type, y, 0);
+					else {
+						result = cal(tokens[op].type, result, y);
+						op = i;
+					}
+				}
 			}
 		}
 	}
