@@ -50,14 +50,14 @@ make_EHelper(lea);
 //make_EHelper(real)
 
 /* logic.c */
-make_EHelper(test);
+make_EHelper(test);//eflags?
 make_EHelper(and);
 make_EHelper(xor);
 make_EHelper(or);
 make_EHelper(sar);
 make_EHelper(shl);
 make_EHelper(shr);
-make_EHelper(setcc);
+make_EHelper(setcc);//?
 make_EHelper(not);
 
 /* prefix.c */
@@ -70,10 +70,10 @@ make_EHelper(nop);
 //make_EHelper(nemu_trap);
 
 /* system.c*/
-make_EHelper(lidt);
-make_EHelper(mov_r2cr);
+make_EHelper(lidt);//?
+make_EHelper(mov_r2cr);//other
 make_EHelper(mov_cr2r);
-make_EHelper(int);
+make_EHelper(int);//?
 make_EHelper(iret);
 make_EHelper(in);
 make_EHelper(out);
