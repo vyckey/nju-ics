@@ -216,7 +216,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 			else if (prior(type) == prior(tokens[op].type)) ++num;
 		}
 	}
-	if (par == 0) {
+	if (par == 0) {printf("%d===%d\n",begin,par);
 		if (op == end) result = expr_cal(suc, begin + 1, end - 1);
 		else {
 			bool unary = false;
@@ -245,7 +245,7 @@ uint32_t expr_cal(bool *suc, int begin, int end) {
 						result = cal(op_type, result, y);
 						op = i;
 					}
-				}printf("%d===%d\n",begin,par);
+				}
 			}
 		}
 	}
