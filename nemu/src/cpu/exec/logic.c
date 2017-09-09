@@ -1,7 +1,7 @@
 #include "cpu/exec.h"
 
 static inline void logic_set_eflags(const rtlreg_t* result, int width) {
-  rtl_update_ZFSF(result, width);
+  rtl_update_ZFSF(result, width);printf("r%x\n", *result);
   rtl_li(&t0, 0);
   rtl_set_CF(&t0);
   rtl_set_OF(&t0);
@@ -31,7 +31,7 @@ make_EHelper(xor) {
 
 make_EHelper(or) {
   rtl_or(&t0, &id_dest->val, &id_src->val);
-  operand_write(id_dest, &t0);printf("t0%x\n", t0);
+  operand_write(id_dest, &t0);
 
   logic_set_eflags(&t0, id_dest->width);
   print_asm_template2(or);
