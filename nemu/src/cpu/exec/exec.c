@@ -245,11 +245,10 @@ void exec_wrapper(bool print_flag) {
 #ifdef DIFF_TEST
   uint32_t eip = cpu.eip;
 #endif
-printf("-%x\n", eip);
-  update_eip();printf("%x\n", cpu.eip);
+  update_eip();printf("+%x\n", eip);
 
 #ifdef DIFF_TEST
-  void difftest_step(uint32_t);printf("+%x\n", eip);
+  void difftest_step(uint32_t);
   difftest_step(eip);
 #endif
 }
