@@ -99,3 +99,14 @@ make_EHelper(lea) {
   operand_write(id_dest, &t2);
   print_asm_template2(lea);
 }
+
+make_EHelper(xchg) {
+  rtlreg_t h, l;
+  h = (-1 << (id_dest->width << 3));
+  l = ~h;
+  t0 = id_dest->val;
+  id_dest->val = (id_dest->val & h) | (id_src->val & l);
+  id_src->val = (id_src->val & h) | (t0 & l);
+  operand_write(id_dest, &id_dest->val);
+  operand_write(id_src, &id_src->val);
+}
