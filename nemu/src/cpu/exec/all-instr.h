@@ -28,7 +28,7 @@ make_EHelper(idiv);
 
 /* control.c */
 make_EHelper(jmp);//rel?,m,ptr
-make_EHelper(jcc);//
+make_EHelper(jcc);//jcxz/jecxz
 make_EHelper(jmp_rm);
 make_EHelper(call);//m,ptr
 make_EHelper(ret);//far
