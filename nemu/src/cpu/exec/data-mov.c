@@ -62,7 +62,7 @@ make_EHelper(cltd) {
     if (t0 < 0) rtl_li(&t1, 0xffffffff);
     else rtl_li(&t1, 0);
     rtl_sr_w(R_EDX, &t1);printf("fdsafdsai\n");
-  }
+  }printf("16 %d\n",decoding.is_operand_size_16);
 
   print_asm(decoding.is_operand_size_16 ? "cwtl" : "cltd");
 }
