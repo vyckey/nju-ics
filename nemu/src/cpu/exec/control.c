@@ -32,9 +32,10 @@ make_EHelper(call) {
 }
 
 make_EHelper(ret) {
-  rtl_pop(&decoding.jmp_eip);printf("fsadofasjsi\n");
-decoding.is_jmp = 1;
-  //if (decoding.is_operand_size_16) *eip = *eip & 0xffff;
+  rtl_pop(&t0);
+  if (decoding.is_operand_size_16) t0 = t0 & 0xffff;
+  decoding.jmp_eip = t0;
+  decoding.is_jmp = 1;
 
   print_asm("ret");
 }
