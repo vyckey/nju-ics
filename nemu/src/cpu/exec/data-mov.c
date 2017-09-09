@@ -51,6 +51,7 @@ make_EHelper(leave) {
 }
 
 make_EHelper(cltd) {
+  printf("%d\n", decoding.is_operand_size_16);
   if (decoding.is_operand_size_16) {//cwd
     rtl_lr_w(&t0, R_EAX);
     if (t0 < 0) rtl_li(&t1, 0xffff);
@@ -68,7 +69,6 @@ make_EHelper(cltd) {
 }
 
 make_EHelper(cwtl) {
-  printf("%d\n", decoding.is_operand_size_16);
   rtl_lr_w(&t0, R_EAX);
   if (decoding.is_operand_size_16) {
     rtl_sext(&t0, &t0, 1);
