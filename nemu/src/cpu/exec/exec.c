@@ -245,8 +245,8 @@ void exec_wrapper(bool print_flag) {
 #ifdef DIFF_TEST
   uint32_t eip = cpu.eip;
 #endif
-printf("fsosfdai\n");
-  update_eip();
+
+  update_eip();printf("fsosfdai\n");
 
 #ifdef DIFF_TEST
   void difftest_step(uint32_t);
