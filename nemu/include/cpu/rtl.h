@@ -195,7 +195,7 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   width <<= 3;
   if (width == 32) rtl_li(&t0, -1);
   else rtl_li(&t0, (~(-1 << width)));
-  printf("%x\n",t0);
+  printf("%x %x\n",t0, *result);
   rtl_li(&t1, (*result & t0) == 0);
   rtl_set_ZF(&t1);
 }
