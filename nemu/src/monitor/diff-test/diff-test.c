@@ -151,7 +151,7 @@ void difftest_step(uint32_t eip) {
   // TODO: Check the registers state with QEMU.
   // Set `diff` as `true` if they are not the same.
   union gdb_regs nemu_r;
-  regcpy_from_nemu(nemu_r);
+  regcpy_from_nemu(nemu_r);printf("fdafdoa\n");
   for (int i = 0; i < 9; ++i) {
     if (r.array[i] != nemu_r.array[i]) {
       Log("\nQEMU --> (eip=0x%x)error in register %s!\nqemu: 0x%x, nemu: 0x%x",
@@ -159,7 +159,7 @@ void difftest_step(uint32_t eip) {
       diff = true;
       break;
     }
-  }printf("fdafdoa\n");
+  }
   if ((r.eflags & 0xac3) != cpu.eflags_val) {
     Log("\nQEMU --> (eip=0x%x)error in eflags!\nqemu: 0x%x, nemu: 0x%x",
         nemu_r.eip, r.eflags & 0xac3, cpu.eflags_val);
