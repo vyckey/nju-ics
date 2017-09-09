@@ -8,7 +8,6 @@ static inline void logic_set_eflags(const rtlreg_t* result, int width) {
 }
 make_EHelper(test) {
   rtl_and(&t0, &id_dest->val, &id_src->val);
-  operand_write(id_dest, &t0);
   
   logic_set_eflags(&t0, id_dest->width);
   print_asm_template2(test);
