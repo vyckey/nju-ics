@@ -58,11 +58,11 @@ make_EHelper(cltd) {
     rtl_sr_w(R_EDX, &t1);
   }
   else {//cdq
-    rtl_lr_l(&t0, R_EAX);printf("fdsafdsai\n");
+    rtl_lr_l(&t0, R_EAX);
     if (t0 < 0) rtl_li(&t1, 0xffffffff);
     else rtl_li(&t1, 0);
     rtl_sr_w(R_EDX, &t1);
-  }
+  }printf("fdsafdsai\n");
 
   print_asm(decoding.is_operand_size_16 ? "cwtl" : "cltd");
 }
