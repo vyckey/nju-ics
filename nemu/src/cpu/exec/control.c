@@ -32,7 +32,7 @@ make_EHelper(call) {
 }
 
 make_EHelper(ret) {
-  rtl_pop(eip);
+  rtl_pop(eip);printf("fsadofasjsi\n");
   if (decoding.is_operand_size_16) *eip = *eip & 0xffff;
 
   print_asm("ret");
