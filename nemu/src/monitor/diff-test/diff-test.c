@@ -156,7 +156,7 @@ void difftest_step(uint32_t eip) {
     if (r.array[i] != nemu_r.array[i]) {
       const char *reg_name = (i == 8) ? "eip" : regsl[i];
       Log("\nQEMU --> (eip=0x%x)error in register %s!\nqemu: 0x%x, nemu: 0x%x",
-          nemu_r.eip, reg_name, r.array[i], nemu_r.array[i]);printf("++fdafdoa\n");
+          nemu_r.eip, reg_name, r.array[i], nemu_r.array[i]);
       diff = true;
       break;
     }
