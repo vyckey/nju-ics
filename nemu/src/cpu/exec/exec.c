@@ -249,7 +249,7 @@ void exec_wrapper(bool print_flag) {
   update_eip();
 
 #ifdef DIFF_TEST
-  void difftest_step(uint32_t);
-  difftest_step(eip);printf("fsosfdai\n");
+  void difftest_step(uint32_t);printf("%x\n", eip);
+  difftest_step(eip);
 #endif
 }
