@@ -146,7 +146,8 @@ static inline void rtl_push(const rtlreg_t* src1, int width) {
   // M[esp] <- src1
   // TODO();
   assert(0 < width && width <= 4);
-  width = (width <= 2) ? 2 : 4;
+  //width = (width <= 2) ? 2 : 4;
+  width = 4;
   rtl_lr_l(&t0, R_ESP);
   rtl_subi(&t1, &t0, width);
   rtl_sr_l(R_ESP, &t1);
@@ -158,7 +159,8 @@ static inline void rtl_pop(rtlreg_t* dest, int width) {
   // esp <- esp + 4
   //TODO();
   assert(0 < width && width <= 4);
-  width = (width <= 2) ? 2 : 4;
+  //width = (width <= 2) ? 2 : 4;
+  width = 4;
   rtl_lr_l(&t0, R_ESP);
   rtl_li(dest, 0);
   rtl_lm(dest, &t0, width);
