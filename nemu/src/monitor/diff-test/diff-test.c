@@ -151,9 +151,11 @@ void difftest_step(uint32_t eip) {
   // Set `diff` as `true` if they are not the same.
   union gdb_regs cpu_r;
   regcpy_from_nemu(cpu_r);
-  for (int i = 0; i < 8; ++i) {
+  for (int i = 0; i < 9; ++i) {
     if (cpu_r.array[i] != r.array[i]) {
-      Log("QEMU --> error in register %s!", regsl[i]);
+      Log("QEMU --> (eip=0x%x)error in register %s!", r.eip, regsl[i]);
+      diff = true;
+      break;
     }
   }
 
