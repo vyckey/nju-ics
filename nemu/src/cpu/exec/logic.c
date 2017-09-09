@@ -1,7 +1,7 @@
 #include "cpu/exec.h"
 
 static inline void logic_set_eflags(const rtlreg_t* result, int width) {
-  printf("r%x\n", *result);rtl_update_ZFSF(result, width);printf("r%x\n", *result);
+  rtl_update_ZFSF(result, width);
   rtl_li(&t0, 0);
   rtl_set_CF(&t0);
   rtl_set_OF(&t0);
