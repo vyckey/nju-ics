@@ -115,9 +115,12 @@ make_EHelper(adc) {
 }
 
 make_EHelper(sbb) {
-  rtl_sub(&t2, &id_dest->val, &id_src->val);
+  if (id_src->width == 1 && id_dest->width > 1) {
+    rtl_sext(&id_src->val, &id_src->val, id_src->width);
+  }
   rtl_get_CF(&t1);
-  rtl_sub(&t2, &t2, &t1);
+  rtl_add(&t2, &id_src->val, &t1);
+  rtl_sub(&t2, &id_dest->val, &t2);
   operand_write(id_dest, &t2);
 
   rtl_update_ZFSF(&t2, id_dest->width);
