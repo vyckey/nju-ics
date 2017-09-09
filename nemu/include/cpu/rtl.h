@@ -141,31 +141,24 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   *dest = (0x1 & (*src1 >> (width - 1))) ? ((-1 << width) | *src1) : *src1;
 }
 
-static inline void rtl_push(const rtlreg_t* src1, int width) {
+static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
   // M[esp] <- src1
-  // TODO();
-  assert(0 < width && width <= 4);
-  //width = (width <= 2) ? 2 : 4;
-  width = 4;
-  rtl_lr_l(&t0, R_ESP);
-  rtl_subi(&t1, &t0, width);
-  rtl_sr_l(R_ESP, &t1);
-  rtl_sm(&t1, width, src1);
+  rtlreg_t t;
+  rtl_lr_l(&t, R_ESP);
+  rtl_subi(&t, &t, 4);
+  rtl_sr_l(R_ESP, &t);
+  rtl_sm(&t, 4, src1);
 }
 
-static inline void rtl_pop(rtlreg_t* dest, int width) {
+static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
   // esp <- esp + 4
-  //TODO();
-  assert(0 < width && width <= 4);
-  //width = (width <= 2) ? 2 : 4;
-  width = 4;
-  rtl_lr_l(&t0, R_ESP);
-  rtl_li(dest, 0);
-  rtl_lm(dest, &t0, width);
-  rtl_addi(&t1, &t0, width);
-  rtl_sr_l(R_ESP, &t1);
+  rtlreg_t t;
+  rtl_lr_l(&t, R_ESP);
+  rtl_lm(dest, &t, 4);
+  rtl_addi(&t, &t, 4);
+  rtl_sr_l(R_ESP, &t);
 }
 
 static inline void rtl_eq0(rtlreg_t* dest, const rtlreg_t* src1) {
@@ -192,19 +185,19 @@ static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  width <<= 3;printf("-%x\n", *result);
-  if (width == 32) rtl_li(&t0, -1);
-  else rtl_li(&t0, (~(-1 << width)));
-  printf("--%x\n", *result);
-  rtl_li(&t1, (*result & t0) == 0);printf("---%x\n", *result);
-  rtl_set_ZF(&t1);
+  width <<= 3;
+  rtlreg_t t;
+  if (width == 32) t = -1;
+  else t= ~(-1 << width);
+  t= ((*result & t) == 0);
+  rtl_set_ZF(&t);
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
   width <<= 3;
-  rtl_li(&t0, (*result & (0x1 << (width - 1))) != 0);
-  rtl_set_SF(&t0);
+  rtlreg_t t = (*result & (0x1 << (width - 1))) != 0;
+  rtl_set_SF(&t);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {

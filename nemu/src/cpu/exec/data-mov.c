@@ -6,35 +6,33 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  rtl_push(&id_dest->val, id_dest->width);
+  rtl_push(&id_dest->val);
   print_asm_template1(push);
 }
 
 make_EHelper(pop) {
-  rtl_pop(&id_dest->val, id_dest->width);
+  rtl_pop(&id_dest->val);
   operand_write(id_dest, &id_dest->val);
 
   print_asm_template1(pop);
 }
 
 make_EHelper(pusha) {
-  int width = decoding.is_operand_size_16 ? 2 : 4;
-  rtl_lr(&t0, R_ESP, width);
+  rtl_lr_l(&t0, R_ESP);
   for (int i = R_EAX; i <= R_EDI; ++i) {
     if (i == R_ESP) rtl_mv(&t1, &t0);
-    else rtl_lr(&t1, i, width);
-    rtl_push(&t1, width);
+    else rtl_lr_l(&t1, i);
+    rtl_push(&t1);
   }
 
   print_asm("pusha");
 }
 
 make_EHelper(popa) {
-  int width = decoding.is_operand_size_16 ? 2 : 4;
   for (int i = R_EDI; i >= R_EAX; --i) {
     if (i != R_ESP) {
-      rtl_pop(&t0, width);
-      rtl_sr(i, width, &t0);
+      rtl_pop(&t0);
+      rtl_sr_l(i, &t0);
     }
   }
 
@@ -43,9 +41,8 @@ make_EHelper(popa) {
 
 make_EHelper(leave) {
   TODO();
-  int width = decoding.is_operand_size_16 ? 2 : 4;
-  rtl_pop(&t0, width);
-  rtl_sr(R_EBP, width, &t0);
+  rtl_pop(&t0);
+  rtl_sr_l(R_EBP, &t0);
 
   print_asm("leave");
 }
