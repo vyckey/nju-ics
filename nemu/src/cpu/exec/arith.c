@@ -59,7 +59,7 @@ make_EHelper(inc) {
   rtl_mv(&id_dest->val, &t1);
   operand_write(id_dest, &t1);
 printf("%x\n", cpu.eflags_val);
-  rtl_update_ZFSF(&t1, id_dest->width);
+  rtl_update_ZFSF(&t1, id_dest->width);printf("%x\n", cpu.eflags_val);
 
   rtl_eq0(&t2, &t1);
   rtl_set_OF(&t2);
