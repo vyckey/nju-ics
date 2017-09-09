@@ -25,7 +25,7 @@ static inline void idex(vaddr_t *eip, opcode_entry *e) {
   /* eip is pointing to the byte next to opcode */
   if (e->decode)
     e->decode(eip);
-  e->execute(eip);printf("fsosfdai\n");
+  e->execute(eip);
 }
 
 static make_EHelper(2byte_esc);
@@ -230,7 +230,7 @@ void exec_wrapper(bool print_flag) {
 #endif
 
   decoding.seq_eip = cpu.eip;
-  exec_real(&decoding.seq_eip);
+  exec_real(&decoding.seq_eip);printf("fsosfdai\n");
 
 #ifdef DEBUG
   int instr_len = decoding.seq_eip - cpu.eip;
