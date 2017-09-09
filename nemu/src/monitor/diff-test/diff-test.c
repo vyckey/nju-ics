@@ -153,7 +153,7 @@ void difftest_step(uint32_t eip) {
   regcpy_from_nemu(cpu_r);
   for (int i = 0; i < 9; ++i) {
     if (cpu_r.array[i] != r.array[i]) {
-      Log("\nQEMU --> (eip=0x%x)error in register %s!", r.eip, regsl[i]);
+      Log("\nQEMU --> (eip=0x%x)error in register %s!", cpu_r.eip, regsl[i]);
       diff = true;
       break;
     }
