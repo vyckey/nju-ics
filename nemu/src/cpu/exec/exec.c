@@ -220,7 +220,7 @@ make_EHelper(real) {
 }
 
 static inline void update_eip(void) {
-  cpu.eip = (decoding.is_jmp ? (decoding.is_jmp = 0, decoding.jmp_eip) : decoding.seq_eip);printf("%x\n", cpu.eip);
+  cpu.eip = (decoding.is_jmp ? (decoding.is_jmp = 0, decoding.jmp_eip) : decoding.seq_eip);
 }
 
 void exec_wrapper(bool print_flag) {
@@ -246,7 +246,7 @@ void exec_wrapper(bool print_flag) {
   uint32_t eip = cpu.eip;
 #endif
 printf("-%x\n", eip);
-  update_eip();
+  update_eip();printf("%x\n", cpu.eip);
 
 #ifdef DIFF_TEST
   void difftest_step(uint32_t);printf("+%x\n", eip);
