@@ -51,7 +51,7 @@ make_group(gp2,
 
   /* 0xf6, 0xf7 */
 make_group(gp3,
-    EX(test), EMPTY, EX(not), EX(neg),
+    IDEX(test_I, test), EMPTY, EX(not), EX(neg),
     EX(mul), EX(imul1), EX(div), EX(idiv))
 
   /* 0xfe */
@@ -147,7 +147,7 @@ opcode_entry opcode_table [512] = {
   /* 0x14 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x18 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x1c */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x20 */	IDEX(r, mov_cr2r), EMPTY, IDEX(r, mov_r2cr), EMPTY,
+  /* 0x20 */	IDEX(E2G, mov_cr2r), EMPTY, IDEX(G2E, mov_r2cr), EMPTY,
   /* 0x24 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x28 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x2c */	EMPTY, EMPTY, EMPTY, EMPTY,
@@ -175,10 +175,10 @@ opcode_entry opcode_table [512] = {
   /* 0x84 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x88 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x8c */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x90 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x94 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x98 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x9c */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x90 */	EX(setcc), EX(setcc), EX(setcc), EX(setcc),
+  /* 0x94 */	EX(setcc), EX(setcc), EX(setcc), EX(setcc),
+  /* 0x98 */	EX(setcc), EX(setcc), EX(setcc), EX(setcc),
+  /* 0x9c */	EX(setcc), EX(setcc), EX(setcc), EX(setcc),
   /* 0xa0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xa4 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xa8 */	EMPTY, EMPTY, EMPTY, EMPTY,

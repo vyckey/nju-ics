@@ -50,7 +50,7 @@ make_EHelper(lea);
 //make_EHelper(real)
 
 /* logic.c */
-make_EHelper(test);//eflags?
+make_EHelper(test);
 make_EHelper(and);
 make_EHelper(xor);
 make_EHelper(or);
