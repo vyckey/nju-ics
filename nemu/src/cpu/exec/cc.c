@@ -4,6 +4,7 @@
 
 void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
   bool invert = subcode & 0x1;
+  rtlreg_t t;
   enum {
     CC_O, CC_NO, CC_B,  CC_NB,
     CC_E, CC_NE, CC_BE, CC_NBE,
@@ -20,7 +21,7 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
     case CC_BE: rtl_get_CF(dest); break;
     case CC_S: rtl_get_SF(dest); break;
     case CC_L: case CC_LE:
-      rtl_get_SF(dest); rtl_get_OF(&t0); *dest = (*dest != t0); break;
+      rtl_get_SF(dest); rtl_get_OF(&t); *dest = (*dest != t); break;
     default: panic("should not reach here");
     case CC_P: panic("n86 does not have PF");
   }
@@ -28,14 +29,14 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
   if (invert && subcode != CC_LE) {
     rtl_xori(dest, dest, 0x1);
   }
-  rtl_get_ZF(&t0);
+  rtl_get_ZF(&t);
   if (subcode == CC_NBE) {
-    *dest = *dest && !t0;
+    *dest = *dest && !t;
   }
   else if (subcode == CC_LE) {
-    *dest = *dest || t0;
+    *dest = *dest || t;
   }
   else if (subcode == CC_NLE) {
-    *dest = *dest && t0;
+    *dest = *dest && t;
   }
 }
