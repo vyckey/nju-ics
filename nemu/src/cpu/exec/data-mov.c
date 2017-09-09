@@ -40,7 +40,8 @@ make_EHelper(popa) {
 }
 
 make_EHelper(leave) {
-  TODO();
+  rtl_lr_l(&t0, R_EBP);//StackAddrSize
+  rtl_sr_l(R_ESP, &t0);
   rtl_pop(&t0);
   rtl_sr_l(R_EBP, &t0);
 
