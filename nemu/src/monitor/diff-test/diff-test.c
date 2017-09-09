@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/prctl.h>
 #include <signal.h>
+#include <stdlib.h>
 
 #include "protocol.h"
 #include <stdlib.h>
@@ -159,7 +160,11 @@ void difftest_step(uint32_t eip) {
       break;
     }
   }
-  
+  if ((r.eflags & 0xac1) != cpu.eflags_val) {
+    Log("\nQEMU --> (eip=0x%x)error in eflags!\nqemu: 0x%x, nemu: 0x%x",
+        nemu_r.eip, r.eflags & 0xac1, cpu.eflags_val);
+    diff = true;
+  }
 
   if (diff) {
     nemu_state = NEMU_END;
