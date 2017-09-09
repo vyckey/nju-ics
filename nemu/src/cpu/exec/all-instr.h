@@ -85,4 +85,5 @@ max.c
 min3.c
 mov-c.c
 movsx.c
+mul-longlong.c
 */ 
