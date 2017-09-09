@@ -60,8 +60,8 @@ make_EHelper(inc) {
   operand_write(id_dest, &t1);
   rtl_update_ZFSF(&t1, id_dest->width);
 
-  rtl_eq0(&t2, &t1);printf("%x\n", cpu.eflags_val);
-  rtl_set_OF(&t2);
+  rtl_eq0(&t2, &t1);
+  rtl_set_OF(&t2);printf("%x\n", cpu.eflags_val);
   rtl_set_CF(&t2);printf("%x\n", cpu.eflags_val);
   print_asm_template1(inc);
 }
