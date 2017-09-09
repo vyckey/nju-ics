@@ -59,7 +59,7 @@ make_EHelper(cltd) {
     rtl_sr_w(R_EDX, &t1);
   }
   else {//cdq
-    rtl_lr_l(&t0, R_EAX);
+    rtl_lr_l(&t0, R_EAX);printf("ax%d\n", t0);
     if (t0 < 0) rtl_li(&t1, 0xffffffff);
     else rtl_li(&t1, 0);
     rtl_sr_w(R_EDX, &t1);
