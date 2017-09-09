@@ -230,7 +230,7 @@ void exec_wrapper(bool print_flag) {
 #endif
 
   decoding.seq_eip = cpu.eip;
-  exec_real(&decoding.seq_eip);printf("fsosfdai\n");
+  exec_real(&decoding.seq_eip);
 
 #ifdef DEBUG
   int instr_len = decoding.seq_eip - cpu.eip;
@@ -245,7 +245,7 @@ void exec_wrapper(bool print_flag) {
 #ifdef DIFF_TEST
   uint32_t eip = cpu.eip;
 #endif
-
+printf("fsosfdai\n");
   update_eip();
 
 #ifdef DIFF_TEST
