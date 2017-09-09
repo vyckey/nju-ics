@@ -45,6 +45,7 @@ make_EHelper(cwtl);//cbw/cwde
 make_EHelper(movsx);
 make_EHelper(movzx);
 make_EHelper(lea);
+make_EHelper(xchg);
 
 /* exec.c */
 //make_EHelper(real)

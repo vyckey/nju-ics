@@ -310,3 +310,8 @@ void operand_write(Operand *op, rtlreg_t* src) {
   else if (op->type == OP_TYPE_MEM) { rtl_sm(&op->addr, op->width, src); }
   else { assert(0); }
 }
+
+make_DHelper(xchg) {
+  decode_op_a(eip, id_src, true);
+  decode_op_r(eip, id_dest, true);
+}
