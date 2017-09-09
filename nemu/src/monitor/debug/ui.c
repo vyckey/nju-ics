@@ -69,7 +69,8 @@ static int cmd_info(char *args) {
 	if (arg1 == NULL) cmd_error(3, "info");
 	else if (strcmp(arg1, "r") == 0) {
 		printf("eip\t0x%08x\n", cpu.eip);
-		printf("eflags: CF(%d) ZF(%d) SF(%d) IF(%d) OF(%d)\n", cpu.eflags._CF, cpu.eflags._ZF,
+		printf("eflags\t0x%08x CF(%d) ZF(%d) SF(%d) IF(%d) OF(%d)\n",
+			cpu.eflags_val, cpu.eflags._CF, cpu.eflags._ZF,
 			cpu.eflags._SF, cpu.eflags._IF, cpu.eflags._OF);
 		for (int i = R_EAX; i <= R_EDI; ++i) {
 			printf("%s\t0x%08x\t%d\n", regsl[i], reg_l(i), reg_l(i));
