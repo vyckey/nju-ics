@@ -101,7 +101,7 @@ make_EHelper(adc) {
 
   rtl_update_ZFSF(&t2, id_dest->width);
 
-  rtl_sltu(&t0, &t2, &id_dest->val);
+  rtl_sltu(&t0, &t2, &id_dest->val);printf("%x %x\n", t2, id_dest->val);
   rtl_set_CF(&t0);
 
   rtl_xor(&t0, &id_dest->val, &id_src->val);
