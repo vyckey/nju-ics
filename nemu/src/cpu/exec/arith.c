@@ -46,9 +46,9 @@ make_EHelper(cmp) {
   rtl_xor(&t1, &id_dest->val, &t3);
   rtl_and(&t2, &t0, &t1);
   rtl_msb(&t2, &t2, id_dest->width);
-  rtl_set_OF(&t2);
+  rtl_set_OF(&t2);printf("%x %x %x\n", id_dest->val, id_src->val, t3);
 
-  rtl_sltu(&t3, &id_dest->val, &t3);printf("%x %x %x\n", id_dest->val, id_src->val, t3);
+  rtl_sltu(&t3, &id_dest->val, &t3);
   rtl_set_CF(&t3);
   print_asm_template2(cmp);
 }
