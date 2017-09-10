@@ -200,6 +200,9 @@ make_EHelper(imul2) {
   operand_write(id_dest, &t1);
 
   rtl_update_ZFSF(&t1, id_dest->width);
+  rtl_li(&t2, 0);
+  rtl_set_CF(&t2);
+  rtl_set_OF(&t2);
 
   print_asm_template2(imul);
 }
