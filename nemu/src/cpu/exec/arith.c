@@ -170,7 +170,7 @@ make_EHelper(mul) {
 // imul with one operand
 make_EHelper(imul1) {
   rtl_lr(&t0, R_EAX, id_dest->width);
-  rtl_mv(&t3, &t0);printf("v%x\n", t3);
+  rtl_mv(&t3, &t0);
   rtl_imul(&t0, &t1, &id_dest->val, &t0);
 
   switch (id_dest->width) {
@@ -191,8 +191,8 @@ make_EHelper(imul1) {
       rtl_sr_l(R_EAX, &t1);
       rtl_update_SF(&t1, 4);
       t2 = !((t0 == 0) && (t1 == 0));
-      rtl_update_ZF(&t2, 4);
-      t3 = (t3 * id_dest->val != t1);printf("%x %x\n", t3, id_dest->val);
+      rtl_update_ZF(&t2, 4);printf("%x\n", t3*id_dest->val);
+      t3 = (t3 * id_dest->val != t1);
       break;
     default: assert(0);
   }
