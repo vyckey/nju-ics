@@ -199,11 +199,7 @@ make_EHelper(imul2) {
   rtl_imul(&t0, &t1, &id_dest->val, &id_src->val);
   operand_write(id_dest, &t1);
 
-  rtl_update_SF(&t0, 4);
-  rtl_eq0(&t2, &t0);
-  rtl_eq0(&t3, &t1);
-  rtl_and(&t2, &t2, &t3);
-  rtl_update_ZF(&t2, 4);
+  rtl_update_ZFSF(&t1, id_dest->width);
 
   print_asm_template2(imul);
 }
