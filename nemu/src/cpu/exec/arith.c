@@ -170,18 +170,21 @@ make_EHelper(mul) {
 // imul with one operand
 make_EHelper(imul1) {
   rtl_lr(&t0, R_EAX, id_dest->width);
+  rtl_mv(&t3, &t0);
   rtl_imul(&t0, &t1, &id_dest->val, &t0);
 
   switch (id_dest->width) {
     case 1:
       rtl_sr_w(R_AX, &t1);
       rtl_update_ZFSF(&t1, 2);
+      t3 = (t3 * id_dest->val != (t1 & 0xff));
       break;
     case 2:
       rtl_update_ZFSF(&t1, 4);
       rtl_sr_w(R_AX, &t1);
       rtl_shri(&t1, &t1, 16);
       rtl_sr_w(R_DX, &t1);
+      t3 = (t3 * id_dest->val != (t1 & 0xffff));
       break;
     case 4:
       rtl_sr_l(R_EDX, &t0);
@@ -189,13 +192,14 @@ make_EHelper(imul1) {
       rtl_update_SF(&t1, 4);
       t2 = !((t0 == 0) && (t1 == 0));
       rtl_update_ZF(&t2, 4);
+      t3 = (t3 * id_dest->val != t1);
       break;
     default: assert(0);
   }
 
-  rtl_li(&t2, 0);
-  rtl_set_CF(&t2);
-  rtl_set_OF(&t2);
+  rtl_li(&t3, 0);
+  rtl_set_CF(&t3);
+  rtl_set_OF(&t3);
 
   print_asm_template1(imul);
 }
@@ -209,7 +213,7 @@ make_EHelper(imul2) {
   operand_write(id_dest, &t1);
 
   rtl_update_ZFSF(&t1, id_dest->width);
-  t2 = (id_dest->val * id_src->val == t1);
+  t2 = (id_dest->val * id_src->val != t1);
   rtl_set_CF(&t2);
   rtl_set_OF(&t2);
 
