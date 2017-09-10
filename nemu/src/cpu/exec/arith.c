@@ -192,7 +192,7 @@ make_EHelper(imul1) {
       rtl_update_SF(&t1, 4);
       t2 = !((t0 == 0) && (t1 == 0));
       rtl_update_ZF(&t2, 4);
-      t3 = (t3 * id_dest->val != t1);
+      t3 = (t3 * id_dest->val != t1);printf("%x %x\n", t3, id_dest->val);
       break;
     default: assert(0);
   }
