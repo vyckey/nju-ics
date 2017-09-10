@@ -191,8 +191,8 @@ make_EHelper(imul1) {
       rtl_sr_l(R_EAX, &t1);
       rtl_update_SF(&t1, 4);
       t2 = !((t0 == 0) && (t1 == 0));
-      rtl_update_ZF(&t2, 4);printf("%x\n", t3*id_dest->val);
-      t3 = (t3 * id_dest->val != t1);
+      rtl_update_ZF(&t2, 4);
+      t3 = (t0 !=0 && t0 != -1);
       break;
     default: assert(0);
   }
