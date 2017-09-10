@@ -70,7 +70,7 @@ make_EHelper(shl) {
     rtl_get_CF(&t3);
     t3 = (t1 != t3);
   }
-  rtl_sltu(&t3, &t2, &id_dest->val);
+  rtl_sltu(&t3, &t2, &id_dest->val);printf("%x %x\n", t2, id_dest->val);
   rtl_set_OF(&t3);
   print_asm_template2(shl);
 }
