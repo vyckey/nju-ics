@@ -175,8 +175,10 @@ make_EHelper(imul1) {
   switch (id_dest->width) {
     case 1:
       rtl_sr_w(R_AX, &t1);
+      rtl_update_ZFSF(&t1, 2);
       break;
     case 2:
+      rtl_update_ZFSF(&t1, 4);
       rtl_sr_w(R_AX, &t1);
       rtl_shri(&t1, &t1, 16);
       rtl_sr_w(R_DX, &t1);
@@ -184,9 +186,16 @@ make_EHelper(imul1) {
     case 4:
       rtl_sr_l(R_EDX, &t0);
       rtl_sr_l(R_EAX, &t1);
+      rtl_update_SF(&t1, 4);
+      t2 = !((t0 == 0) && (t1 == 0));
+      rtl_update_ZF(&t2, 4);
       break;
     default: assert(0);
   }
+
+  rtl_li(&t2, 0);
+  rtl_set_CF(&t2);
+  rtl_set_OF(&t2);
 
   print_asm_template1(imul);
 }
