@@ -41,9 +41,9 @@ make_EHelper(cmp) {
   rtl_sext(&id_src->val, &id_src->val, id_src->width);
   rtl_sub(&t3, &id_dest->val, &id_src->val);
 
-  rtl_update_ZFSF(&t3, id_dest->width);printf("%x\n", id_dest->val);
+  rtl_update_ZFSF(&t3, id_dest->width);
   rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_xor(&t1, &id_src->val, &t3);
+  rtl_xor(&t1, &id_src->val, &t3);printf("%x %x\n", t0, t1);
   rtl_and(&t2, &t0, &t1);
   rtl_msb(&t2, &t2, id_dest->width);
   rtl_set_OF(&t2);
