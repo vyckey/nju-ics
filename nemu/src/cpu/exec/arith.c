@@ -170,7 +170,7 @@ make_EHelper(mul) {
 // imul with one operand
 make_EHelper(imul1) {
   rtl_lr(&t0, R_EAX, id_dest->width);
-  rtl_mv(&t3, &t0);
+  rtl_mv(&t3, &t0);printf("v%x\n", t3);
   rtl_imul(&t0, &t1, &id_dest->val, &t0);
 
   switch (id_dest->width) {
