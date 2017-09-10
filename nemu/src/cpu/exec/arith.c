@@ -197,7 +197,6 @@ make_EHelper(imul1) {
     default: assert(0);
   }
 
-  rtl_li(&t3, 0);
   rtl_set_CF(&t3);
   rtl_set_OF(&t3);
 
