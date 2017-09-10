@@ -93,7 +93,7 @@ make_EHelper(neg) {
   print_asm_template1(neg);
 }
 
-make_EHelper(adc) {
+make_EHelper(adc) {printf("%x\n", id_dest->val);
   rtl_add(&t2, &id_dest->val, &id_src->val);
   rtl_get_CF(&t1);
   rtl_add(&t2, &t2, &t1);
@@ -101,7 +101,7 @@ make_EHelper(adc) {
 
   rtl_update_ZFSF(&t2, id_dest->width);
 
-  rtl_sltu(&t0, &t2, &id_dest->val);printf("%x %x\n", t2, id_dest->val);
+  rtl_sltu(&t0, &t2, &id_dest->val);
   rtl_set_CF(&t0);
 
   rtl_xor(&t0, &id_dest->val, &id_src->val);
