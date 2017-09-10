@@ -213,6 +213,7 @@ make_EHelper(imul2) {
 
   rtl_update_ZFSF(&t1, id_dest->width);
   t2 = (id_dest->val * id_src->val != t1);
+  if (id_dest->width == 4) t2 = (t0 !=0 && t0 != -1);
   rtl_set_CF(&t2);
   rtl_set_OF(&t2);
 
