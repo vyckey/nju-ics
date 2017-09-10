@@ -66,11 +66,11 @@ make_EHelper(shl) {
   rtl_update_ZFSF(&t2, id_dest->width);
   if (t1 != 0) shift_set_cf(&t0, 32 - (t1 & 0x1f));
   if (t1 == 1) {
-    rtl_msb(&t1, &t0, id_dest->width);
+    rtl_msb(&t2, &t0, id_dest->width);
     rtl_get_CF(&t3);
-    t3 = (t1 != t3);
+    t3 = (t2 != t3);
   }
-  rtl_sltu(&t3, &t2, &id_dest->val);printf("%x %x\n", t2, id_dest->val);
+  else rtl_li(&t3, 0);
   rtl_set_OF(&t3);
   print_asm_template2(shl);
 }
