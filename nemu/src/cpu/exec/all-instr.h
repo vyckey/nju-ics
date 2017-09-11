@@ -61,6 +61,11 @@ make_EHelper(shr);
 make_EHelper(setcc);
 make_EHelper(not);
 
+make_EHelper(rcl);
+make_EHelper(rcr);
+make_EHelper(rol);
+make_EHelper(ror);
+
 /* prefix.c */
 //make_EHelper(real);
 //make_EHelper(operand_size)

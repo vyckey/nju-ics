@@ -110,3 +110,22 @@ make_EHelper(not) {
 
   print_asm_template1(not);
 }
+
+make_EHelper(rcl) {
+
+}
+
+make_EHelper(rcr) {
+
+}
+
+make_EHelper(rol) {
+  rtl_rotate_l(&t0, &id_dest->val, &id_src->val, id_dest->width);
+  //operand_write(id_dest, &value);
+}
+
+make_EHelper(ror) {
+  //rtl_li(t1, id_dest->width*8 - id_src->val);
+  rtl_rotate_l(&t0, &id_dest->val, &t1, id_dest->width);
+  //operand_write(id_dest, &value);
+}
