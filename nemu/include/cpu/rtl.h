@@ -43,14 +43,6 @@ make_rtl_arith_logic(sar)
 make_rtl_arith_logic(slt)
 make_rtl_arith_logic(sltu)
 
-static inline void rtl_rotate_l(rtlreg_t* dest, const rtlreg_t * src1, const rtlreg_t* src2, int width) {
-  uint32_t n, low;
-  width <<= 3;
-  n = *src2;
-  low = ~(-1 << n);
-  *dest = (*src1 << n) | (low & (*src1 >> (width - n)));
-}
-
 static inline void rtl_mul(rtlreg_t* dest_hi, rtlreg_t* dest_lo, const rtlreg_t* src1, const rtlreg_t* src2) {
   asm volatile("mul %3" : "=d"(*dest_hi), "=a"(*dest_lo) : "a"(*src1), "r"(*src2));
 }
@@ -213,6 +205,32 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
   rtl_update_ZF(result, width);
   rtl_update_SF(result, width);
+}
+
+static inline void rtl_rotate_l(rtlreg_t* dest, const rtlreg_t * src1, const rtlreg_t* src2, int width) {
+  uint32_t n, low;
+  width <<= 3;
+  n = *src2;
+  low = ~(-1 << n);
+  *dest = (*src1 << n) | (low & (*src1 >> (width - n)));
+}
+
+static inline void rtl_rotate_cl(rtlreg_t* dest, const rtlreg_t * src1, const rtlreg_t* src2, int width) {
+  uint32_t n, low;
+  rtlreg_t t;
+  width <<= 3;
+  n = *src2;
+  rtl_get_CF(&t);
+  if (0 < n && n < 32) {
+    low = ~(-1 << (n - 1));
+    *dest = (*src1 << n) | (low & (*src1 >> (width - n + 1))) | (t << n);
+    t = (*src1 >> (width - n)) & 0x1;
+  }
+  else if (n == 32 && width == 32) {
+    *dest = ((*src1 >> 1) & (-1 << 31)) | (t << 31);
+    t = (*src1 & 0x1);
+  }
+  rtl_set_CF(&t);
 }
 
 #endif

@@ -112,20 +112,35 @@ make_EHelper(not) {
 }
 
 make_EHelper(rcl) {
-
+  rtl_get_CF(&t0);
+  rtl_msb(&t1, &id_dest->val, id_dest->width);
+  rtl_rotate_cl(&t2, &id_dest->val, &id_src->val, id_dest->width);
+  operand_write(id_dest, &t2);
+  if (id_src->val == 1) {
+    t1 = (t0 != t1);
+    rtl_set_OF(&t1);
+  }
 }
 
 make_EHelper(rcr) {
-
+  rtl_li(&t2, id_dest->width*8 - id_src->val);
+  rtl_rotate_cl(&t2, &id_dest->val, &t2, id_dest->width);
+  operand_write(id_dest, &t2);
 }
 
 make_EHelper(rol) {
   rtl_rotate_l(&t0, &id_dest->val, &id_src->val, id_dest->width);
-  //operand_write(id_dest, &value);
+  operand_write(id_dest, &t0);
 }
 
 make_EHelper(ror) {
-  //rtl_li(t1, id_dest->width*8 - id_src->val);
-  rtl_rotate_l(&t0, &id_dest->val, &t1, id_dest->width);
-  //operand_write(id_dest, &value);
+  rtl_msb(&t0, &id_dest->val, id_dest->width);
+  rtl_li(&t2, id_dest->width*8 - id_src->val);
+  rtl_rotate_l(&t2, &id_dest->val, &t2, id_dest->width);
+  operand_write(id_dest, &t2);
+  if (id_src->val == 1) {
+    rtl_msb(&t1, &t2, id_dest->width);
+    t3 = (t0 != t1);
+    rtl_set_OF(&t3);
+  }
 }
