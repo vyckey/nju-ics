@@ -4,7 +4,7 @@ void diff_test_skip_qemu();
 void diff_test_skip_nemu();
 
 make_EHelper(lidt) {
-  rtl_li(&t0, id_dest->addr);printf("sfa%x\n", id_dest->val);
+  rtl_li(&t0, id_dest->addr);
   rtl_lm(&t1, &t0, 2);
   cpu.idtr.limit = t1;
   rtl_addi(&t0, &t0, 2);
