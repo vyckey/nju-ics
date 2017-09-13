@@ -4,7 +4,12 @@ void diff_test_skip_qemu();
 void diff_test_skip_nemu();
 
 make_EHelper(lidt) {
-  TODO();
+  rtl_li(&t0, id_dest->val);
+  rtl_lm(&t1, &t0, 2);
+  cpu.idtr.limit = t1;
+  rtl_addi(&t0, &t0, 2);
+  rtl_lm(&t1, &t0, 4);
+  cpu.idtr.base = t1;
 
   print_asm_template1(lidt);
 }

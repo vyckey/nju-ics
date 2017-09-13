@@ -189,7 +189,6 @@ make_DHelper(E) {
 }
 
 make_DHelper(gp7_E) {
-  printf("%d\n", id_dest->width);
   decode_op_rm(eip, id_dest, false, NULL, false);
 }
 
