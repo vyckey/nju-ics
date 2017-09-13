@@ -49,10 +49,11 @@ typedef struct {
     } eflags;
     uint32_t eflags_val;
   };
-  struct idtr {
+  struct {
     uint16_t limit;
     uint32_t base;
   } idtr;
+  rtlreg_t cs;
 
   vaddr_t eip;
 
