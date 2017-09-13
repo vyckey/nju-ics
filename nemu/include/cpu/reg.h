@@ -49,7 +49,7 @@ typedef struct {
     } eflags;
     uint32_t eflags_val;
   };
-  uint32_t idtr;
+  vaddr_t idtr;
 
   vaddr_t eip;
 
