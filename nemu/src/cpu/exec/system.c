@@ -26,8 +26,9 @@ make_EHelper(mov_cr2r) {
 }
 
 make_EHelper(int) {
-  TODO();
-
+  void raise_intr(uint8_t NO, vaddr_t ret_addr);
+  // no implement all, read i386
+  raise_intr(id_src->val, decoding.seq_eip);
   print_asm("int %s", id_dest->str);
 
 #ifdef DIFF_TEST
