@@ -13,7 +13,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 		high_addr = vaddr_read(gate_addr + 4, 4) & 0xffff0000;
 	decoding.jmp_eip = high_addr | low_addr;
 	decoding.is_jmp = 1;
-	printf("%x %x\n",cpu.idtr.base, decoding.jmp_eip);
+	printf("%x %x %x\n",cpu.idtr.base, gate_addr, decoding.jmp_eip);
 }
 
 void dev_raise_intr() {
