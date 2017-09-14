@@ -31,7 +31,7 @@ make_EHelper(pusha) {
 make_EHelper(popa) {
   for (int i = R_EDI; i >= R_EAX; --i) {
     if (i != R_ESP) {
-      rtl_pop(&t0);
+      rtl_pop(&t0);printf("%x\n", t0);
       rtl_sr_l(i, &t0);
     }
   }
