@@ -66,7 +66,10 @@ make_EHelper(shl) {
   rtl_shl(&t2, &id_dest->val, &id_src->val);
   operand_write(id_dest, &t2);
   // unnecessary to update CF and OF in NEMU
+
+  printf("shl before zf:%d val:%x width:%d\n", cpu.eflags._ZF, t2, id_dest->width);
   rtl_update_ZFSF(&t2, id_dest->width);
+  printf("shl before zf:%d val:%x\n", cpu.eflags._ZF, t2);
   if (t1 != 0) shift_set_cf(&t0, 32 - (t1 & 0x1f));
   if (t1 == 1) {
     rtl_msb(&t2, &t0, id_dest->width);
