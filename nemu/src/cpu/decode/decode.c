@@ -315,3 +315,7 @@ make_DHelper(xchg) {
   decode_op_a(eip, id_src, true);
   decode_op_r(eip, id_dest, true);
 }
+
+make_DHelper(SI) {
+  decode_op_SI(eip, id_dest, true);
+}
