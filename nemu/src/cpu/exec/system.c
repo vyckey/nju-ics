@@ -42,6 +42,7 @@ make_EHelper(int) {
 }
 
 make_EHelper(iret) {
+  // no implement all, read i386
   rtl_pop(&t0);
   decoding.jmp_eip = t0;
   decoding.is_jmp = 1;
