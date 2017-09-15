@@ -162,9 +162,9 @@ void difftest_step(uint32_t eip) {
     }
   }
   if ((r.eflags & 0xac3) != cpu.eflags_val) {
-    /*Log("\nQEMU --> (eip=0x%x)error in eflags!\nqemu: 0x%x, nemu: 0x%x",
-        nemu_r.eip, r.eflags & 0xac3, cpu.eflags_val);*/
-    //diff = true;
+    Log("\nQEMU --> (eip=0x%x)error in eflags!\nqemu: 0x%x, nemu: 0x%x",
+        nemu_r.eip, r.eflags & 0xac3, cpu.eflags_val);
+    diff = true;
   }
 
   if (diff) {
