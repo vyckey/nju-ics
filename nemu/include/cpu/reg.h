@@ -53,7 +53,7 @@ typedef struct {
     uint16_t limit;
     uint32_t base;
   } idtr;
-  rtlreg_t cs;
+  rtlreg_t cs, cr0, cr3;
 
   vaddr_t eip;
 
