@@ -91,7 +91,7 @@ off_t fs_lseek(int fd, off_t offset, int whence) {
     if (fd == FD_STDIN || fd == FD_STDOUT || fd == FD_STDERR) return 0;
     else if (0 <= fd && fd < NR_FILES) {
         Finfo *f = &file_table[fd];
-        if (whence == SEEK_SET) {
+        if (whence == SEEK_SET) {//printf("%d %d\n", f->open_offset, offset);
             if (0 <= offset && offset <= f->size) return (f->open_offset = offset);
             return EOVERFLOW; 
         }

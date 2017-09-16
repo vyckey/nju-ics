@@ -30,7 +30,7 @@ size_t dispinfo_read(void *buf, off_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, off_t offset, size_t len) {
-	_draw_fill(buf, offset, len);
+	_draw_fill(buf, offset >> 2, len >> 2);
 	/*
 	int x, y, h, write_bytes;
 	y = offset / _screen.width;

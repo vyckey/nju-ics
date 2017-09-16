@@ -187,14 +187,14 @@ void SDL_SetPalette(SDL_Surface *s, int flags, SDL_Color *colors,
       uint8_t b = colors[i].b;
       palette[i] = (r << 16) | (g << 8) | b;
     }
-    redraw();
+    redraw();printf("update %p %d\n", s, s->pitch);
   }
 }
 
 /* ======== The following functions are already implemented. ======== */
 
 void SDL_UpdateRect(SDL_Surface *screen, int x, int y, int w, int h) {
-  assert(screen);
+  assert(screen);printf("fuck%p %d\n", screen, screen->pitch);
   assert(screen->pitch == W);
 
   // this should always be true in NEMU-PAL
@@ -244,7 +244,7 @@ SDL_Surface* SDL_CreateRGBSurface(uint32_t flags, int width, int height, int dep
   s->flags = flags;
   s->w = width;
   s->h = height;
-  s->pitch = (width * depth) >> 3;
+  s->pitch = (width * depth) >> 3;printf("s%p %d\n", s, s->pitch);
   s->pixels = (flags & SDL_HWSURFACE ? (void *)VMEM_ADDR : malloc(s->pitch * height));
   assert(s->pixels);
 

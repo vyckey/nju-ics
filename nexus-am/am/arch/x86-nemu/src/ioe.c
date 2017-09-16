@@ -33,11 +33,11 @@ void _draw_rect(const uint32_t *pixels, int x, int y, int w, int h) {
   }
 }
 
-size_t _draw_fill(const uint32_t *pixels, off_t offset, size_t len) {
-  size_t fill_bytes = (offset + len <= _screen.width * _screen.height) ? len
-                      : (_screen.width * _screen.height - len);
-  memcpy((void*)fb + offset, pixels, fill_bytes);
-  return fill_bytes;
+size_t _draw_fill(const uint32_t *pixels, off_t offset, size_t plen) {
+  size_t fill_pixels = (offset + plen <= _screen.width * _screen.height) ? plen
+                      : (_screen.width * _screen.height - plen);
+  memcpy(&fb[offset], pixels, fill_pixels << 2);
+  return fill_pixels;
 }
 
 void _draw_sync() {
