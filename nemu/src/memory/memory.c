@@ -65,3 +65,14 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 	}*/
 	paddr_write(addr, len, data);
 }
+
+paddr_t page_translate(vaddr_t addr) {
+	/*
+	PDE *pde = pdirs[PDE_IDX(addr)];
+	PTE *pte = pde[PTE_IDX(addr)];
+	if (pte->present) {
+		return (pte->page_frame << 12) | (addr & PAGE_MASK)
+	}
+	*/
+	return 0;
+}
