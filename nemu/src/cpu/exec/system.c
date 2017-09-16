@@ -15,7 +15,7 @@ make_EHelper(lidt) {
 }
 
 make_EHelper(mov_r2cr) {
-  printf("%x %x %d %d\n", *eip, decoding.seq_eip, id_dest->reg, id_dest->val);
+  printf("%x %x\n", *eip, decoding.seq_eip);
   switch (id_dest->reg) {
     case 0: cpu.cr0 = id_src->val; break;
     case 3: cpu.cr3 = id_src->val; break;
@@ -26,9 +26,9 @@ make_EHelper(mov_r2cr) {
 }
 
 make_EHelper(mov_cr2r) {
-  switch (id_dest->val) {
-    case 0: t0 = cpu.cr0;
-    case 3: t0 = cpu.cr3;
+  switch (id_dest->reg) {
+    case 0: operand_write(id_dest, &cpu.cr0); break;
+    case 3: operand_write(id_dest, &cpu.cr3); break;
     default: panic("Invalid CR exec");
   }
 
