@@ -1,5 +1,6 @@
 #include "nemu.h"
 #include "device/mmio.h"
+#include "memory/mmu.h"
 
 #define PMEM_SIZE (128 * 1024 * 1024)
 
@@ -27,6 +28,11 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 }
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
+	if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
+		TODO();
+	}
+
+
   return paddr_read(addr, len);
 }
 
