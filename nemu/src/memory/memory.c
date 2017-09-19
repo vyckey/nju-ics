@@ -67,12 +67,12 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 }
 
 paddr_t page_translate(vaddr_t addr) {
-	/*
-	PDE *pde = pdirs[PDE_IDX(addr)];
-	PTE *pte = pde[PTE_IDX(addr)];
+	PDE *pdirs = (PDE*)0 + (cpu.cr3 & (~0xfff));
+	PTE *ptes = (PTE*)0 + (pdirs[PDE_IDX(addr)].page_frame << 12);
+	PTE *pte = &ptes[PTE_IDX(addr)];
 	if (pte->present) {
-		return (pte->page_frame << 12) | (addr & PAGE_MASK)
+		return (pte->page_frame << 12) | (addr & PAGE_MASK);
 	}
-	*/
+	assert(0);
 	return 0;
 }
