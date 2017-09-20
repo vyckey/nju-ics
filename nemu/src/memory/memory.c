@@ -40,7 +40,7 @@ static paddr_t page_translate(vaddr_t addr) {
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
 	printf("vaddr_read\n");
-	if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
+	/*if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
 		TODO();
 		int len1, len2;
 		uint32_t data;
@@ -56,7 +56,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 	else {
 		paddr_t paddr = page_translate(addr);
 		return paddr_read(paddr, len);
-	}
+	}*/
 	return paddr_read(addr, len);
 }
 
