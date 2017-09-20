@@ -27,8 +27,19 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
  	else mmio_write(addr, len, data, device_no);
 }
 
+static paddr_t page_translate(vaddr_t addr) {
+	PDE *pdirs = (PDE*)0 + (cpu.cr3 & (~0xfff));
+	PDE *pdir = &pdirs[PDE_IDX(addr)];
+	if (! pdir->present) assert(0);
+
+	PTE *ptes = (PTE*)0 + (pdir->val & (~0xfff));
+	PTE *pte = &ptes[PTE_IDX(addr)];
+	if (! pte->present) assert(0);
+	return (pte->page_frame << 12) | (addr & PAGE_MASK);
+}
+
 uint32_t vaddr_read(vaddr_t addr, int len) {
-	/*if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
+	if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
 		TODO();
 		int len1, len2;
 		uint32_t data;
@@ -44,12 +55,12 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 	else {
 		paddr_t paddr = page_translate(addr);
 		return paddr_read(paddr, len);
-	}*/
+	}
 	return paddr_read(addr, len);
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-	/*if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
+	if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
 		int len1, len2;
 		paddr_t paddr;
 		len1 = PAGE_SIZE - (addr & PAGE_MASK);
@@ -61,18 +72,7 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 	}
 	else {
 		paddr_t paddr = page_translate(addr);
-		paddr_write(paddr, len);
-	}*/
+		paddr_write(paddr, len, data);
+	}
 	paddr_write(addr, len, data);
-}
-
-paddr_t page_translate(vaddr_t addr) {
-	PDE *pdirs = (PDE*)0 + (cpu.cr3 & (~0xfff));
-	PDE *pdir = &pdirs[PDE_IDX(addr)];
-	if (! pdir->present) assert(0);
-
-	PTE *ptes = (PTE*)0 + (pdir->val & (~0xfff));
-	PTE *pte = &ptes[PTE_IDX(addr)];
-	if (! pte->present) assert(0);
-	return (pte->page_frame << 12) | (addr & PAGE_MASK);
 }
