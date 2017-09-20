@@ -185,6 +185,7 @@ static int cmd_help(char *args) {
 }
 
 void ui_mainloop(int is_batch_mode) {
+	printf("fdsiafd\n");
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
