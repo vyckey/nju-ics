@@ -19,7 +19,7 @@ int NDL_OpenDisplay(int w, int h) {
   canvas_w = w;
   canvas_h = h;
   canvas = malloc(sizeof(uint32_t) * w * h);
-  assert(canvas);
+  assert(canvas);printf("NDL_OpenDisplay %p %p\n", canvas, canvas+w*h);
 
   if (getenv("NWM_APP")) {
     has_nwm = 1;
@@ -58,12 +58,13 @@ int NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
       }
       printf("d\n");
     }
-  } else {
+  } else {//printf("#1 NDL_DrawRect%d\n", (*(int*)0x04197814));
+  //printf("-->%p %p\n", canvas, &canvas[(h+y)*canvas_w+(w+x)]);
     for (int i = 0; i < h; i ++) {
       for (int j = 0; j < w; j ++) {
         canvas[(i + y) * canvas_w + (j + x)] = pixels[i * w + j];
       }
-    }
+    }//printf("#2 NDL_DrawRect%d\n", (*(int*)0x04197814));
   }
 }
 

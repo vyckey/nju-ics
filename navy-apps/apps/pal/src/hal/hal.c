@@ -97,8 +97,8 @@ static void redraw() {
   for (int i = 0; i < W; i ++)
     for (int j = 0; j < H; j ++)
       fb[i + j * W] = palette[vmem[i + j * W]];
-
-  NDL_DrawRect(fb, 0, 0, W, H);
+printf("# redraw%d\n", ((SDL_Surface *)0x04197804)->pitch);
+  NDL_DrawRect(fb, 0, 0, W, H);printf("# redraw%d\n", ((SDL_Surface *)0x04197804)->pitch);
   NDL_Render();
 }
 
@@ -186,16 +186,16 @@ void SDL_SetPalette(SDL_Surface *s, int flags, SDL_Color *colors,
       uint8_t g = colors[i].g;
       uint8_t b = colors[i].b;
       palette[i] = (r << 16) | (g << 8) | b;
-    }
-    redraw();printf("update %p %d\n", s, s->pitch);
+    }printf("#1 SDL_SetPalette %p %d\n", s, s->pitch);
+    redraw();printf("#2 SDL_SetPalette %p %d\n", s, s->pitch);
   }
 }
 
 /* ======== The following functions are already implemented. ======== */
 
 void SDL_UpdateRect(SDL_Surface *screen, int x, int y, int w, int h) {
-  assert(screen);printf("fuck%p %d\n", screen, screen->pitch);
-  assert(screen->pitch == W);
+  assert(screen);printf("# SDL_UpdateRect %p %p %d %d\n", screen, &screen->pitch, screen->pitch, W);
+  printf("%d\n", screen->pitch == W);assert(screen->pitch == W);
 
   // this should always be true in NEMU-PAL
   assert(screen->flags & SDL_HWSURFACE);
@@ -244,7 +244,7 @@ SDL_Surface* SDL_CreateRGBSurface(uint32_t flags, int width, int height, int dep
   s->flags = flags;
   s->w = width;
   s->h = height;
-  s->pitch = (width * depth) >> 3;printf("s%p %d\n", s, s->pitch);
+  s->pitch = (width * depth) >> 3;printf("#SDL_CreateRGBSurface %p %d\n", s, s->pitch);
   s->pixels = (flags & SDL_HWSURFACE ? (void *)VMEM_ADDR : malloc(s->pitch * height));
   assert(s->pixels);
 
