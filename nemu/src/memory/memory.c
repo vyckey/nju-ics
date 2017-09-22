@@ -33,7 +33,7 @@ static paddr_t page_translate(vaddr_t addr) {
 	PDE pde;
 	PTE pte;
 
-	pde.val = paddr_read(PAGE_FRAME(cpu.cr3) + sizeof(PDE)*PDE_IDX(addr), sizeof(PDE));
+	pde.val = paddr_read(PAGE_FRAME(cpu.cr3) + sizeof(PDE)*1, sizeof(PDE));
 	printf("%x\n", pde.val);
 	if (! pde.present) assert(0);
 
