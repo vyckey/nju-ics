@@ -32,7 +32,7 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 static paddr_t page_translate(vaddr_t addr) {
 	char *base = (char*)0 + PDIR_BASE;
 	PDE *pdirs = (PDE*)base;
-	PDE *pdir = &pdirs[PDE_IDX(addr)];printf("%p %x\n", &pdir->val, pdir->val);
+	PDE *pdir = &pdirs[PDE_IDX(addr)];printf("%p %x\n", &pdir->val, pdirs[PDE_IDX(addr)].val);
 	if (! pdir->present) assert(0);
 
 	PTE *ptes = (PTE*)0 + (pdir->val & (~0xfff));
