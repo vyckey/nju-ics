@@ -3,7 +3,7 @@
 make_EHelper(add) {
   rtl_mv(&t0, &id_dest->val);
   rtl_mv(&t1, &id_src->val);
-  rtl_add(&id_dest->val, &id_dest->val, &id_src->val);
+  rtl_add(&id_dest->val, &id_dest->val, &id_src->val);printf("fdiafjdais\n");
   operand_write(id_dest, &id_dest->val);
 
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
