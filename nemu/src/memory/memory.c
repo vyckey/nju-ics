@@ -45,6 +45,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 	if (addr==0x7ba0) printf("read %#x %d\n", addr, len);
 	if (IS_PAGING) {
 		if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
+			TODO();
 			int len1, len2;
 			uint32_t data;
 			paddr_t paddr;
