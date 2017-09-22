@@ -39,7 +39,7 @@ static paddr_t page_translate(vaddr_t addr) {
 }
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
-	printf("read %#x\n", addr);
+	printf("read %#x %d\n", addr, len);
 	if (cpu.cr0 & 0x80000000) {
 		if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
 			int len1, len2;
