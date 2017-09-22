@@ -16,7 +16,7 @@ make_EHelper(lidt) {
 
 make_EHelper(mov_r2cr) {
   switch (id_dest->reg) {
-    case 0: cpu.cr0 = id_src->val;printf("--->%p\n", &cpu.cr0); break;
+    case 0: cpu.cr0 = id_src->val; break;
     case 3: cpu.cr3 = id_src->val; break;
     default: panic("Invalid CR exec");
   }t0 = 0x7ba0;
