@@ -212,8 +212,8 @@ static make_EHelper(2byte_esc) {
   idex(eip, &opcode_table[opcode]);
 }
 
-make_EHelper(real) {
-  uint32_t opcode = instr_fetch(eip, 1);printf("fdjsijfja\n");
+make_EHelper(real) {printf("fdjsijfja\n");
+  uint32_t opcode = instr_fetch(eip, 1);
   decoding.opcode = opcode;
   set_width(opcode_table[opcode].width);
   idex(eip, &opcode_table[opcode]);
