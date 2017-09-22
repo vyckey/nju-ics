@@ -3,6 +3,8 @@
 #include "memory/mmu.h"
 
 #define PMEM_SIZE (128 * 1024 * 1024)
+#define IS_PAGING ((cpu.cr0 >> 31) & 0x1)
+#define PDIR_BASE (cpu.cr3 & ~0xfff)
 
 #define pmem_rw(addr, type) *(type *)({\
     Assert(addr < PMEM_SIZE, "physical address(0x%08x) is out of bound", addr); \
@@ -28,7 +30,7 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 }
 
 static paddr_t page_translate(vaddr_t addr) {
-	PDE *pdirs = (PDE*)0 + (cpu.cr3 & (~0xfff));
+	PDE *pdirs = (PDE*)0 + PDIR_BASE;
 	PDE *pdir = &pdirs[PDE_IDX(addr)];
 	if (! pdir->present) assert(0);
 
