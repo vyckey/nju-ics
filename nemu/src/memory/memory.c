@@ -31,7 +31,7 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 
 static paddr_t page_translate(vaddr_t addr) {
 	PDE pde;
-	pde.val = paddr_read(PDIR_BASE + sizeof(PDE)*PDE_IDX(addr), 4);
+	pde.val = paddr_read(PDIR_BASE + sizeof(PDE)*1, 4);
 	printf("%x\n", pde.val);
 	if (! pde.present) assert(0);
 /*
