@@ -54,7 +54,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			return data;
 		}
 		else {
-			paddr_t paddr = page_translate(addr);
+			paddr_t paddr = page_translate(addr);printf("fdsaidfajso\n");
 			return paddr_read(paddr, len);
 		}
 	}
