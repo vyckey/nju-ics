@@ -24,7 +24,7 @@ make_EHelper(mov_r2cr) {
   print_asm("movl %%%s,%%cr%d", reg_name(id_src->reg, 4), id_dest->reg);
 }
 
-make_EHelper(mov_cr2r) {
+make_EHelper(mov_cr2r) {printf("dfs %x\n", cpu.cr0);
   switch (id_dest->reg) {
     case 0: operand_write(id_dest, &cpu.cr0); break;
     case 3: operand_write(id_dest, &cpu.cr3); break;
