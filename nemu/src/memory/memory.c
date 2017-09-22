@@ -58,7 +58,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 		}
 		else {
 			paddr_t paddr = page_translate(addr);
-			if (addr==0x7ba0) printf("# %#x %p\n", paddr, pmem+addr);
+			if (addr==0x7ba0) printf("# %#x %p %x\n", paddr, pmem+addr, *(int*)(pmem+addr));
 			return paddr_read(paddr, len);
 		}
 	}
