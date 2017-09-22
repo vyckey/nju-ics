@@ -4,7 +4,7 @@
 
 #define PMEM_SIZE (128 * 1024 * 1024)
 #define IS_PAGING ((cpu.cr0 >> 31) & 0x1)
-#define PDIR_BASE (cpu.cr3 & ~0xfff)
+#define PAGE_FRAME(v) (v & ~0xfff)
 
 #define pmem_rw(addr, type) *(type *)({\
     Assert(addr < PMEM_SIZE, "physical address(0x%08x) is out of bound", addr); \
@@ -31,15 +31,15 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 
 static paddr_t page_translate(vaddr_t addr) {
 	PDE pde;
-	pde.val = paddr_read(PDIR_BASE + sizeof(PDE)*1, 4);
+	PTE pte;
+
+	pde.val = paddr_read(PAGE_FRAME(cpu.cr3) + sizeof(PDE)*PDE_IDX(addr), sizeof(PDE));
 	printf("%x\n", pde.val);
 	if (! pde.present) assert(0);
-/*
-	PTE *ptes = (PTE*)0 + (pdir->val & (~0xfff));
-	PTE *pte = &ptes[PTE_IDX(addr)];
-	if (! pte->present) assert(0);
-	return (pte->page_frame << 12) | (addr & PAGE_MASK);*/
-	return 0;
+
+	pte.val = paddr_read(PAGE_FRAME(pde.val) + sizeof(PTE)*PTE_IDX(addr), sizeof(PTE));
+	if (! pte.present) assert(0);
+	return PAGE_FRAME(pte.val) | P_OFFSET(addr);
 }
 //1d90000 1d70000
 uint32_t vaddr_read(vaddr_t addr, int len) {
