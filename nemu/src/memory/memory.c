@@ -30,15 +30,16 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 }
 
 static paddr_t page_translate(vaddr_t addr) {
-	PDE *pdirs = (PDE*)((void*)0 + PDIR_BASE);
-	int x = paddr_read(PDIR_BASE, 4);
-	PDE *pdir = pdirs + PDE_IDX(addr);printf("%p %x\n", pdir, x);
-	if (! pdir->present) assert(0);
-
+	PDE pde;
+	pde.val = paddr_read(PDIR_BASE + sizeof(PDE)*PDE_IDX(addr), 4);
+	printf("%x\n", pde.val);
+	if (! pde.present) assert(0);
+/*
 	PTE *ptes = (PTE*)0 + (pdir->val & (~0xfff));
 	PTE *pte = &ptes[PTE_IDX(addr)];
 	if (! pte->present) assert(0);
-	return (pte->page_frame << 12) | (addr & PAGE_MASK);
+	return (pte->page_frame << 12) | (addr & PAGE_MASK);*/
+	return 0;
 }
 //1d90000 1d70000
 uint32_t vaddr_read(vaddr_t addr, int len) {
