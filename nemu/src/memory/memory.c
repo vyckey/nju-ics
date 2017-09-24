@@ -52,7 +52,6 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			paddr = page_translate(addr);
 			data = paddr_read(paddr, len1);
 			paddr = page_translate(addr + len1);
-			//printf("%x-%x %x-%x\n", addr, page_translate(addr), addr + len1,paddr);
 			data = (paddr_read(paddr, len2) << (len1 << 3)) | data;
 			return data;
 		}
@@ -65,7 +64,6 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-	//printf("write %#x\n", addr);
 	if (IS_PAGING) {
 		if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
 			int len1, len2;
