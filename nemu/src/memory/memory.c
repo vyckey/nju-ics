@@ -35,7 +35,14 @@ static paddr_t page_translate(vaddr_t addr) {
 
 	pde.val = paddr_read(PAGE_FRAME(cpu.cr3) + sizeof(PDE)*PDE_IDX(addr), sizeof(PDE));
 	if (! pde.present) panic("Invalid page directory entry at address %#x\n", addr);
-if (addr==0x8048000) printf("cr3 %x pte %x\n", cpu.cr3, pde.val);
+if (addr==0x8048000) {
+	printf("cr3 %x pte %x\n", cpu.cr3, pde.val);
+	for (int i = 0; i < 1024; ++i){
+		int x = 0x1d94000+i*4;
+		void *p = (void*)0 + x;
+		printf("%#x %#x\n", x, *(int*)p);
+	}
+}
 	pte.val = paddr_read(PAGE_FRAME(pde.val) + sizeof(PTE)*PTE_IDX(addr), sizeof(PTE));
 	if (! pte.present) panic("Invalid page table entry at address %#x\n", addr);
 
