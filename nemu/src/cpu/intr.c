@@ -1,11 +1,14 @@
 #include "cpu/exec.h"
 #include "memory/mmu.h"
 
+#define TIMER_IRQ 32
+
 void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * That is, use ``NO'' to index the IDT.
    */
 	rtl_push(&cpu.eflags_val);
+	if (NO == TIMER_IRQ) cpu.eflags._IF = 0;
 	rtl_push(&cpu.cs);
 	rtl_push(&ret_addr);
 	vaddr_t gate_addr = cpu.idtr.base + sizeof(GateDesc)*NO;
@@ -16,4 +19,5 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 }
 
 void dev_raise_intr() {
+	cpu.INTR = 1;
 }
