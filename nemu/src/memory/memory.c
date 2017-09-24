@@ -37,7 +37,6 @@ static paddr_t page_translate(vaddr_t addr) {
 	if (! pde.present) assert(0);
 	pte.val = paddr_read(PAGE_FRAME(pde.val) + sizeof(PTE)*PTE_IDX(addr), sizeof(PTE));
 	if (! pte.present) assert(0);
-	if (addr==0x1b41ffd) printf("%#x addr%#x %#x\n", pde.val, (int)(PAGE_FRAME(pde.val) + sizeof(PTE)*PTE_IDX(addr)),pte.val);
 
 	return PAGE_FRAME(pte.val) | P_OFFSET(addr);
 }
@@ -53,9 +52,8 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			paddr = page_translate(addr);
 			data = paddr_read(paddr, len1);
 			paddr = page_translate(addr + len1);
-			printf("%x-%x %x-%x\n", addr, page_translate(addr), addr + len1,paddr);
-			data = (paddr_read(paddr, len2) << len1) | data;
-			TODO();
+			//printf("%x-%x %x-%x\n", addr, page_translate(addr), addr + len1,paddr);
+			data = (paddr_read(paddr, len2) << (len1 << 3)) | data;
 			return data;
 		}
 		else {
@@ -77,7 +75,7 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 			paddr = page_translate(addr);
 			paddr_write(paddr, len1, data);
 			paddr = page_translate(addr + len1);
-			paddr_write(paddr, len2, data >> len1);
+			paddr_write(paddr, len2, data >> (len1 << 3));
 		}
 		else {
 			paddr_t paddr = page_translate(addr);
