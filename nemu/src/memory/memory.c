@@ -44,12 +44,11 @@ static paddr_t page_translate(vaddr_t addr) {
 uint32_t vaddr_read(vaddr_t addr, int len) {
 	if (IS_PAGING) {
 		if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
-			printf("%x %d\n", addr, len);
 			int len1, len2;
 			uint32_t data;
 			paddr_t paddr;
 			len1 = PAGE_SIZE - (addr & PAGE_MASK);
-			len2 = len - len1;
+			len2 = len - len1;printf("%x %d %d\n", addr, len1, len2);
 			paddr = page_translate(addr);
 			data = paddr_read(paddr, len1);
 			paddr = page_translate(addr + len1);
