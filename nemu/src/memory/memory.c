@@ -17,7 +17,6 @@ uint8_t pmem[PMEM_SIZE];
 
 uint32_t paddr_read(paddr_t addr, int len) {
 	int device_no = is_mmio(addr);
-	if (addr==0x73a0) printf("device %d\n", device_no);
  	return ((device_no == -1)
  		? pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3))
  		: mmio_read(addr, len, device_no));
@@ -43,7 +42,6 @@ static paddr_t page_translate(vaddr_t addr) {
 }
 //1d90000 1d70000
 uint32_t vaddr_read(vaddr_t addr, int len) {
-	if (addr==0x7ba0) printf("read %#x %d\n", addr, len);
 	if (IS_PAGING) {
 		if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
 			TODO();
@@ -59,6 +57,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			return data;
 		}
 		else {
+			if (addr==0x7ba0) printf("read %#x %d\n", addr, len);
 			paddr_t paddr = page_translate(addr);
 			if (addr==0x7ba0) 
 				printf("# %#x %p %x %x\n", paddr, pmem+addr, *(int*)(pmem+addr), paddr_read(paddr, len));
