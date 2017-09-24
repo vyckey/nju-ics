@@ -35,12 +35,12 @@ static paddr_t page_translate(vaddr_t addr) {
 
 	pde.val = paddr_read(PAGE_FRAME(cpu.cr3) + sizeof(PDE)*PDE_IDX(addr), sizeof(PDE));
 	if (! pde.present) {
-		Log("Invalid page directory entry at address %#x\n", addr);
+		panic("Invalid page directory entry at address %#x\n", addr);
 		assert(0);
 	}
 	pte.val = paddr_read(PAGE_FRAME(pde.val) + sizeof(PTE)*PTE_IDX(addr), sizeof(PTE));
 	if (! pte.present) {
-		Log("Invalid page table entry at address %#x\n", addr);
+		panic("Invalid page table entry at address %#x\n", addr);
 		assert(0);
 	}
 
