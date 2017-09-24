@@ -48,10 +48,10 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			uint32_t data;
 			paddr_t paddr;
 			len1 = PAGE_SIZE - (addr & PAGE_MASK);
-			len2 = len - len1;printf("%x %d %d\n", addr, len1, len2);
+			len2 = len - len1;
 			paddr = page_translate(addr);
 			data = paddr_read(paddr, len1);
-			paddr = page_translate(addr + len1);
+			paddr = page_translate(addr + len1);printf("%x-%d %x-%d\n", addr, len1, addr + len1,len2);
 			data = (paddr_read(paddr, len2) << len1) | data;
 			return data;
 		}
