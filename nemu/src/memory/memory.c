@@ -60,7 +60,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			if (addr==0x7ba0) printf("read %#x %d %#x\n", addr, len, paddr_read(addr, len));
 			paddr_t paddr = page_translate(addr);
 			if (addr==0x7ba0) 
-				printf("# %#x %p %x %x\n", paddr, pmem+addr, *(int*)(pmem+addr), paddr_read(paddr, len));
+				printf("# %#x %p %x %x\n", paddr, pmem+addr, *(int*)(pmem+addr), paddr_read(0x7ba0, len));
 			return paddr_read(paddr, len);
 		}
 	}
