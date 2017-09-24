@@ -32,10 +32,10 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 static paddr_t page_translate(vaddr_t addr) {
 	PDE pde;
 	PTE pte;
-if (addr==0x8048000) printf("cr3 %x\n", cpu.cr3);
+
 	pde.val = paddr_read(PAGE_FRAME(cpu.cr3) + sizeof(PDE)*PDE_IDX(addr), sizeof(PDE));
 	if (! pde.present) panic("Invalid page directory entry at address %#x\n", addr);
-
+if (addr==0x8048000) printf("cr3 %x pte %x\n", cpu.cr3, pte.val);
 	pte.val = paddr_read(PAGE_FRAME(pde.val) + sizeof(PTE)*PTE_IDX(addr), sizeof(PTE));
 	if (! pte.present) panic("Invalid page table entry at address %#x\n", addr);
 
