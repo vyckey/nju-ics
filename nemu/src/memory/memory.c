@@ -53,6 +53,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			data = paddr_read(paddr, len1);
 			paddr = page_translate(addr + len1);printf("%x-%d %x-%d\n", addr, len1, addr + len1,len2);
 			data = (paddr_read(paddr, len2) << len1) | data;
+			TODO();
 			return data;
 		}
 		else {
