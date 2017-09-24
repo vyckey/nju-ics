@@ -17,6 +17,7 @@ uint8_t pmem[PMEM_SIZE];
 
 uint32_t paddr_read(paddr_t addr, int len) {
 	int device_no = is_mmio(addr);
+	if (addr==0x6b2560) printf("device %d\n", device_no);
  	return ((device_no == -1)
  		? pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3))
  		: mmio_read(addr, len, device_no));
