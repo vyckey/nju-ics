@@ -11,7 +11,7 @@
 #define PT_SIZE						((NR_PTE) * (PAGE_SIZE))
 #define PDE_IDX(addr) ((addr >> 22) & (NR_PDE - 1))
 #define PTE_IDX(addr) ((addr >> 12) & (NR_PTE - 1))
-#define P_OFFSET(addr) (addr & (NR_PTE - 1))
+#define P_OFFSET(addr) (addr & 0xfff)
 
 /* the Control Register 0 */
 typedef union CR0 {
