@@ -37,10 +37,10 @@ static paddr_t page_translate(vaddr_t addr) {
 	if (! pde.present) panic("Invalid page directory entry at address %#x\n", addr);
 if (addr==0x8048000) {
 	printf("cr3 %x pte %x\n", cpu.cr3, pde.val);
-	for (int i = 0; i < 1024; ++i){
+	/*for (int i = 0; i < 1024; ++i){
 		int x = 0x1d94000+i*4;
 		printf("%#x %#x\n", x, paddr_read(x, 4));
-	}
+	}*/
 }
 	pte.val = paddr_read(PAGE_FRAME(pde.val) + sizeof(PTE)*PTE_IDX(addr), sizeof(PTE));
 	if (! pte.present) panic("Invalid page table entry at address %#x\n", addr);
