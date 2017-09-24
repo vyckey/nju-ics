@@ -37,6 +37,7 @@ static paddr_t page_translate(vaddr_t addr) {
 	if (! pde.present) assert(0);
 	pte.val = paddr_read(PAGE_FRAME(pde.val) + sizeof(PTE)*PTE_IDX(addr), sizeof(PTE));
 	if (! pte.present) assert(0);
+	if (addr==0x1b41ffd) printf("%#x %#x \n", pde.val, pte.val);
 
 	return PAGE_FRAME(pte.val) | P_OFFSET(addr);
 }
