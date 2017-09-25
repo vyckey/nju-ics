@@ -247,6 +247,7 @@ void exec_wrapper(bool print_flag) {
 #ifdef DIFF_TEST
   uint32_t eip = cpu.eip;
 #endif
+  printf("intr %d\n", cpu.INTR);
   if (cpu.INTR && cpu.eflags._IF) {
     TODO();
     cpu.INTR = false;
