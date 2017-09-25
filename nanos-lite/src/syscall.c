@@ -1,6 +1,7 @@
 #include "common.h"
 #include "syscall.h"
 #include "fs.h"
+#include "proc.h"
 
 int _sys_none();
 ssize_t _sys_write(int fd, const void *buf, size_t count);
@@ -39,7 +40,25 @@ void _sys_exit(int code) {
     _halt(code);
 }
 
-int _sys_brk(uintptr_t addr) {
+int _sys_brk(uintptr_t new_brk) {
+    if (current->cur_brk == 0) {
+        current->cur_brk = current->max_brk = new_brk;
+    }
+    else {
+        if (new_brk > current->max_brk) {
+            // map memory region [current->max_brk, new_brk) into address space current->as
+            uintptr_t va_pos = PGROUNDUP(current->max_brk);
+            while (va_pos < new_brk) {
+                void *va, *pa;
+                va = (void*)va_pos;
+                pa = new_page();
+                _map(&current->as, va, pa);
+                va_pos += PGSIZE;
+            }
+            current->max_brk = new_brk;
+        }
+        current->cur_brk = new_brk;
+    }
     return 0;
 }
 /*

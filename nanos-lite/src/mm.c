@@ -25,3 +25,6 @@ void init_mm() {
 
   _pte_init(new_page, free_page);
 }
+void print(int v) {
+	printf("jjjj 0x%x\n", v);
+}

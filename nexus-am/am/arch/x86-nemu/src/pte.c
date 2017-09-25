@@ -66,11 +66,29 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  uint32_t vaddr = (uint32_t)va, paddr = (uint32_t)pa;
+  uint32_t pde_idx = (vaddr >> PDXSHFT) & (NR_PDE - 1), pte_idx = (vaddr >> PTXSHFT) & (NR_PTE - 1);
+  PDE pde = ((PDE*)(p->ptr))[pde_idx];
+  if ((pde & 0x1) != 0x1) {
+    uintptr_t *new_pde = palloc_f();
+    for (int i = 0; i < NR_PTE; ++i) new_pde[i] = 0;
+    pde = (uintptr_t)new_pde;
+    ((PDE*)(p->ptr))[pde_idx] = pde | 0x1;
+  }
+  pde = pde & ~(PGSIZE - 1);
+  ((PTE*)pde)[pte_idx] = paddr | 0x1;
 }
 
 void _unmap(_Protect *p, void *va) {
 }
 
-_RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  return NULL;
+_RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry,
+                char *const argv[], char *const envp[]) {
+  void *pos = ustack.end - sizeof(_RegSet) - 8;
+  _RegSet *trap_frame = pos;
+  //trap_frame->eflags = 0x200;
+  trap_frame->esp = (uintptr_t)trap_frame;
+  trap_frame->eip = (uintptr_t)entry;
+  trap_frame->cs = 8;
+  return trap_frame;
 }
