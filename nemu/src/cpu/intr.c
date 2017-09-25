@@ -19,5 +19,6 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 }
 
 void dev_raise_intr() {
+	printf("fdsjafias\n");
 	cpu.INTR = 1;
 }
