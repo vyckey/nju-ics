@@ -86,9 +86,9 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry,
                 char *const argv[], char *const envp[]) {
   void *pos = ustack.end - sizeof(_RegSet) - 8;
   _RegSet *trap_frame = pos;
-  //trap_frame->eflags = 0x200;
-  trap_frame->esp = (uintptr_t)trap_frame;
-  trap_frame->eip = (uintptr_t)entry;
+  trap_frame->eflags = 0x202;
   trap_frame->cs = 8;
+  trap_frame->eip = (uintptr_t)entry;
+  trap_frame->esp = sizeof(_RegSet) + (uintptr_t)trap_frame;
   return trap_frame;
 }

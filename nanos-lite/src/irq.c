@@ -9,7 +9,7 @@ static _RegSet* do_event(_Event e, _RegSet* r) {
  	switch (e.event) {
 		case _EVENT_SYSCALL: do_syscall(r); /*ret = schedule(r);*/ break;
 		case _EVENT_TRAP: Log("trap event..."); ret = schedule(r); break;
-		case _EVENT_IRQ_TIME: Log("time interupt..."); ret = schedule(r); break;
+		case _EVENT_IRQ_TIME: /*Log("time interupt...");*/ ret = schedule(r); break;
 		default: panic("Unhandled event ID = %d", e.event);
 	}
 

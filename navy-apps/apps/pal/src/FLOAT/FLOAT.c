@@ -4,16 +4,16 @@
 
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
   assert(0);
-  bool sign = SIGN(a) ^ SIGN(b);
+  uint32_t sign = SIGN(a) ^ SIGN(b);
   FLOAT m = (UNSIGN_F(a) * UNSIGN_F(b)) >> 16;
-  return (sign ? SIGN_F(m) : m);
+  return (sign != 0 ? SIGN_F(m) : m);
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
   assert(0);
-  bool sign = SIGN(a) ^ SIGN(b);
+  uint32_t sign = SIGN(a) ^ SIGN(b);
   FLOAT d = (UNSIGN_F(a) / UNSIGN_F(b)) << 16;
-  return (sign ? SIGN_F(d) : d);
+  return (sign != 0 ? SIGN_F(d) : d);
 }
 
 FLOAT f2F(float a) {
@@ -29,7 +29,7 @@ FLOAT f2F(float a) {
 
   assert(0);
 
-  return (a << 16);
+  return (a * (1 << 16));
 }
 
 FLOAT Fabs(FLOAT a) {
