@@ -223,7 +223,11 @@ make_EHelper(real) {
 
 static inline void update_eip(void) {
   if (decoding.is_jmp && decoding.jmp_eip==0x101632) printf("%x -> 0x101632\n", cpu.eip);
-  if (decoding.is_jmp && decoding.jmp_eip<0x100000) printf("error %x\n", cpu.eip);
+  if (decoding.is_jmp && decoding.jmp_eip<0x100000) {
+    uint32_t t = 0x01d56fec;
+    rtl_lm(&t, &t, 4);
+    printf("error %x %x\n", cpu.eip, t);
+  }
   cpu.eip = (decoding.is_jmp ? (decoding.is_jmp = 0, decoding.jmp_eip) : decoding.seq_eip);
 }
 
