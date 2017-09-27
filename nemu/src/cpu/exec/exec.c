@@ -222,11 +222,6 @@ make_EHelper(real) {
 }
 
 static inline void update_eip(void) {
-  uint32_t t = 0x01d56fec;
-    rtl_lm(&t, &t, 4);
-  if (decoding.is_jmp && decoding.jmp_eip<0x100000) {
-    printf("%x error %x %x\n",decoding.jmp_eip, cpu.eip, t);
-  }
   cpu.eip = (decoding.is_jmp ? (decoding.is_jmp = 0, decoding.jmp_eip) : decoding.seq_eip);
 }
 
