@@ -253,6 +253,11 @@ void exec_wrapper(bool print_flag) {
   uint32_t eip = cpu.eip;
 #endif
   if (cpu.INTR && cpu.eflags._IF) {
+    if (cpu.eip==0x10163b) {
+      uint32_t t = 0x01d56fec;
+    rtl_lm(&t, &t, 4);
+    printf("ssddsf %x\n", t);
+    }
     cpu.INTR = false;
     extern void raise_intr(uint8_t NO, vaddr_t ret_addr);
     raise_intr(TIMER_IRQ, cpu.eip);
