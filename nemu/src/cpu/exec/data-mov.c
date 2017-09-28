@@ -47,8 +47,8 @@ make_EHelper(leave) {
 }
 
 make_EHelper(cltd) {
+  printf("cltd\n");
   if (decoding.is_operand_size_16) {//cwd
-    printf("cltd\n");
     rtl_lr_w(&t0, R_EAX);
     if (t0 < 0) rtl_li(&t1, 0xffff);
     else rtl_li(&t1, 0);
