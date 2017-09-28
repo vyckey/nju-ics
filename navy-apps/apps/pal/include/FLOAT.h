@@ -9,14 +9,12 @@ typedef int FLOAT;
 #define SIGN_F(f) ((f) | 0x80000000)
 
 static inline int F2int(FLOAT a) {
-  assert(0);
   int t = UNSIGN_F(a) >> 16;
   if (SIGN(a)) return -t;
   return t;
 }
 
 static inline FLOAT int2F(int a) {
-  assert(0);
   FLOAT f = (a >= 0) ? a : (-a);
   f << 16;
   if (a < 0) SIGN_F(f);
@@ -24,7 +22,6 @@ static inline FLOAT int2F(int a) {
 }
 
 static inline FLOAT F_mul_int(FLOAT a, int b) {
-  assert(0);
   int m = (b >= 0) ? b : -b;
   FLOAT f = a * m;
   if (b < 0) return (SIGN(f) ? UNSIGN_F(f) : SIGN_F(f));
@@ -32,7 +29,6 @@ static inline FLOAT F_mul_int(FLOAT a, int b) {
 }
 
 static inline FLOAT F_div_int(FLOAT a, int b) {
-  assert(0);
   int m = (b >= 0) ? b : -b;
   FLOAT f = a / m;
   if (b < 0) return (SIGN(f) ? UNSIGN_F(f) : SIGN_F(f));

@@ -27,13 +27,12 @@ FLOAT f2F(float a) {
    * performing arithmetic operations on it directly?
    */
 
-  assert(0);
+  a = a * (1 << 16);
 
-  return (a * (1 << 16));
+  return (int)a;
 }
 
 FLOAT Fabs(FLOAT a) {
-  assert(0);
   return UNSIGN_F(a);
 }
 
