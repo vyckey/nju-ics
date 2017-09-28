@@ -49,13 +49,13 @@ make_EHelper(leave) {
 make_EHelper(cltd) {
   if (decoding.is_operand_size_16) {//cwd
     rtl_lr_w(&t0, R_EAX);
-    if (t0 < 0) rtl_li(&t1, 0xffff);
+    if ((t0 & 0x8000) != 0) rtl_li(&t1, 0xffff);
     else rtl_li(&t1, 0);
     rtl_sr_w(R_EDX, &t1);
   }
   else {//cdq
     rtl_lr_l(&t0, R_EAX);
-    if (t0 < 0) rtl_li(&t1, 0xffffffff);
+    if ((t0 & 0x80000000) != 0) rtl_li(&t1, 0xffffffff);
     else rtl_li(&t1, 0);
     rtl_sr_l(R_EDX, &t1);
   }
