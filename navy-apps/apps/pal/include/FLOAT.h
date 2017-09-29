@@ -16,7 +16,7 @@ static inline int F2int(FLOAT a) {
 
 static inline FLOAT int2F(int a) {
   FLOAT f = (a >= 0) ? a : (-a);
-  f << 16;
+  f <<= 16;
   if (a < 0) SIGN_F(f);
   return f;
 }
